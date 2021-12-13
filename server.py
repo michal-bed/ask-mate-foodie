@@ -1,8 +1,10 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect,session
 from data_manager import upload_file
+from werkzeug.security import generate_password_hash, check_password_hash
 import data_manager
 import time
 import datetime
+import re
 
 
 UPLOAD_FOLDER = './static/upload'
@@ -423,7 +425,7 @@ def register():
         if not re.match(r'[^@]+@+[^@]+\.[^@]', mail):
             return render_template('register.html', message='wrong email')
 
-        user_data = {'user_name': request.form['user_name'],'account_type' :'basic',
+        user_data = {'user_name': request.form['user_name'],'reputation': '1', 'account_type':'basic',
                      'password': generate_password_hash(request.form['password']), 'email': request.form['email']}
         data_manager.create_user(user_data)
 
