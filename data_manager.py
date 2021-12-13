@@ -236,8 +236,8 @@ def add_views_to_question(cursor, question_id):
 @database_common.connection_handler
 def add_new_answer(cursor, data):
     query = """
-        INSERT INTO answer(submission_time, vote_number, question_id, message, image)
-        VALUES ('{0}', {1}, {2}, '{3}', '{4}')""".format(data['submission_time'], data['vote_number'],
+        INSERT INTO answer(submission_time, vote_number, question_id, message, image, accepted)
+        VALUES ('{0}', {1}, {2}, '{3}', '{4}', accepted = 0)""".format(data['submission_time'], data['vote_number'],
                                                          data['question_id'], data['message'], data['image'])
     cursor.execute(query)
 

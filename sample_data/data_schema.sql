@@ -33,7 +33,8 @@ CREATE TABLE answer (
     question_id integer,
     message text,
     user_id integer,
-    image text
+    image text,
+    accepted boolean
 );
 
 DROP TABLE IF EXISTS public.comment;
@@ -52,7 +53,8 @@ CREATE TABLE ask_mate_user (
     id serial NOT NULL,
     user_name text NOT NULL unique,
     email text NOT NULL unique,
-    password varchar(255) NOT NULL
+    password varchar(255) NOT NULL,
+    reputation text NOT NULL
 );
 
 DROP TABLE IF EXISTS public.question_tag;
