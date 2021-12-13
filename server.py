@@ -6,6 +6,7 @@ import time
 import re
 import encrypter
 import datetime
+import session_common
 
 
 UPLOAD_FOLDER = './static/upload'
@@ -142,6 +143,7 @@ def remove_vote_from_answer(answer_id):
 
 
 @app.route('/add-question', methods=['GET', 'POST'])
+@session_common.require_login
 def add_question():
     """Add new question to the database."""
     if request.method == 'POST':
