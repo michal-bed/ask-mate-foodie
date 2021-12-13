@@ -426,7 +426,7 @@ def register():
         if not re.match(r'[^@]+@+[^@]+\.[^@]', mail):
             return render_template('register.html', message='wrong email')
 
-        user_data = {'user_name': request.form['user_name'],'reputation': '1', 'account_type':'basic',
+        user_data = {'user_name': request.form['user_name'],'reputation': 0 , 'account_type':'basic',
                      'password': generate_password_hash(request.form['password']), 'email': request.form['email']}
         data_manager.create_user(user_data)
 
@@ -437,6 +437,9 @@ def register():
 def logout():
     session.pop('login')
     session.pop('user')
+    session.pop('reputation')
+    session.pop('account_type')
+
     return render_template('login.html', message='You are logged out')
 
 if __name__ == "__main__":
