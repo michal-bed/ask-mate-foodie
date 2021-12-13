@@ -3,9 +3,9 @@ from data_manager import upload_file
 from werkzeug.security import generate_password_hash, check_password_hash
 import data_manager
 import time
-import datetime
 import re
 import encrypter
+import datetime
 
 
 UPLOAD_FOLDER = './static/upload'
@@ -32,6 +32,12 @@ def collect_all_tags_for_one_question(question):
     if tags[question_id] is None:
         tags[question_id] = []
     return tags
+
+
+@app.before_request
+def handle_permanent_session():
+    session.permanent = True
+    app.permanent_session_lifetime = datetime.timedelta(minutes=5)
 
 
 @app.route("/")
