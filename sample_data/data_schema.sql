@@ -54,7 +54,8 @@ CREATE TABLE ask_mate_user (
     user_name text NOT NULL unique,
     email text NOT NULL unique,
     password varchar(255) NOT NULL,
-    reputation text NOT NULL
+    reputation text NOT NULL,
+    account_type VARCHAR(100) NOT NULL
 );
 
 DROP TABLE IF EXISTS public.question_tag;
