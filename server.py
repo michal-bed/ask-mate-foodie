@@ -1,10 +1,11 @@
-from flask import Flask, render_template, request, redirect,session
+from flask import Flask, render_template, request, redirect, session
 from data_manager import upload_file
 from werkzeug.security import generate_password_hash, check_password_hash
 import data_manager
 import time
 import datetime
 import re
+import encrypter
 
 
 UPLOAD_FOLDER = './static/upload'
@@ -404,14 +405,14 @@ def login():
         password = request.form['password']
         my_user = data_manager.get_one_user(user_name)
         if my_user and check_password_hash(my_user['password'], password):
-            session['login'] = True
-            session['user'] = my_user['user_name']
-            session['account_type'] = my_user['account_type']
-            session['reputation'] = my_user['reputation']
+            session['login'] = encrypter.encrypt('True')
+            session['user'] = encrypter.encrypt(my_user['user_name'])
+            session['account_type'] = encrypter.encrypt(my_user['account_type'])
             return redirect("/")
         else:
             return render_template('login.html', message='incorrect user name or password')
     return render_template('login.html')
+
 
 @app.route('/register', methods=["GET", "POST"])
 def register():
@@ -420,27 +421,28 @@ def register():
     if request.method == 'POST':
         username = request.form['user_name']
         if data_manager.get_one_user(username):
-            return render_template('register.html' , message = 'user already exists')
+            return render_template('register.html', message='user already exists')
 
         mail = request.form['email']
         if not re.match(r'[^@]+@+[^@]+\.[^@]', mail):
             return render_template('register.html', message='wrong email')
 
-        user_data = {'user_name': request.form['user_name'],'reputation': 0 , 'account_type':'basic',
+        user_data = {'user_name': request.form['user_name'], 'reputation': 0, 'account_type': 'basic',
                      'password': generate_password_hash(request.form['password']), 'email': request.form['email']}
         data_manager.create_user(user_data)
 
         return redirect("/login")
     return render_template('register.html')
 
+
 @app.route('/logout', methods=["GET"])
 def logout():
     session.pop('login')
     session.pop('user')
-    session.pop('reputation')
     session.pop('account_type')
 
     return render_template('login.html', message='You are logged out')
+
 
 if __name__ == "__main__":
     app.run(debug=True)
