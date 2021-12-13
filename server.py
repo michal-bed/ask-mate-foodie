@@ -403,10 +403,11 @@ def login():
         user_name = request.form['user_name']
         password = request.form['password']
         my_user = data_manager.get_one_user(user_name)
-        if my_user and check_password_hash(my_user['user_password'], password):
+        if my_user and check_password_hash(my_user['password'], password):
             session['login'] = True
             session['user'] = my_user['user_name']
             session['account_type'] = my_user['account_type']
+            session['reputation'] = my_user['reputation']
             return redirect("/")
         else:
             return render_template('login.html', message='incorrect user name or password')
