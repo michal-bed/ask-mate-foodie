@@ -323,11 +323,15 @@ def add_comment_to_answer(answer_id):
 @app.route('/answer/<answer_id>/accept', methods=["GET", "POST"])
 def accept_answer(answer_id):
     answer_to_accept = data_manager.get_one_answer(answer_id)[0]
-    user_id = answer_to_accept['user_id']
-    if request.method == "GET":
+    question_of_answer = data_manager.get_one_question(answer_to_accept['question_id'])[0]
+    question_user_id = question_of_answer['user_id']
+    session_user_id = utils.get_user_id(session)
+    if session_user_id == question_user_id:
         answer_to_accept['accepted'] = '1'
         data_manager.edit_answer(answer_id, answer_to_accept)
-    return redirect(f'/answer/{answer_id}')
+        return redirect(request.referrer)
+    flash("You do not have permission to accept answers.")
+    return redirect('/')
 
 
 @app.route('/search')
