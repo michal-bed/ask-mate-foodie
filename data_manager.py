@@ -453,3 +453,23 @@ def get_one_user(cursor, user_name):
     WHERE user_name = %s"""
     cursor.execute(query, (user_name, ))
     return cursor.fetchone()
+
+
+@database_common.connection_handler
+def get_user_questions(cursor, user_id):
+    query = """
+    SELECT *
+    FROM question
+    WHERE user_id = '{0}'""".format(user_id)
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_user_data(cursor, user_id):
+    query = """
+    SELECT user_name, registration_time, reputation
+    FROM ask_mate_user
+    WHERE id = {0}""".format(user_id)
+    cursor.execute(query)
+    return cursor.fetchone()

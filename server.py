@@ -385,29 +385,34 @@ def logout():
 
 
 @app.route("/user/<user_id>")
-def user_page():
+def user_page(user_id):
+    user_data = data_manager.get_user_data(user_id)
     return render_template('user_page.html', questions=4, answers=3, comments=7,
-                           create_account_date="2021.12.12 12.36.3738", reputation=5, user_name='Arutorek')
+                           user_data=user_data)
 
 
 @app.route("/user/<user_id>/questions")
 def get_user_questions(user_id):
+    user_data = data_manager.get_user_data(user_id)
+    user_questions = data_manager.get_user_questions(user_id)
     return render_template('user_page.html', questions=4, answers=3, comments=7,
-                           create_account_date="2021.12.12 12.36.3738", reputation=5, user_name='Arutorek',
+                           user_data=user_data, user_questions=user_questions,
                            url="/user/<user_id>/questions")
 
 
 @app.route("/user/<user_id>/answers")
 def get_user_answers(user_id):
+    user_data = data_manager.get_user_data(user_id)
     return render_template('user_page.html', questions=4, answers=3, comments=7,
-                           create_account_date="2021.12.12 12.36.3738", reputation=5, user_name='Arutorek',
+                           user_data=user_data,
                            url="/user/<user_id>/answers")
 
 
 @app.route("/user/<user_id>/comments")
 def get_user_comments(user_id):
+    user_data = data_manager.get_user_data(user_id)
     return render_template('user_page.html', questions=4, answers=3, comments=7,
-                           create_account_date="2021.12.12 12.36.3738", reputation=5, user_name='Arutorek',
+                           user_data=user_data,
                            url="/user/<user_id>/comments")
 
 

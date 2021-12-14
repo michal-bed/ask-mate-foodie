@@ -18,18 +18,18 @@
 <body>
     <div class="user-box">
         <h1>Your profile</h1>
-        <h1>{{ user_name }}{% if href == "/user/<user_id>/questions" %}test{% endif %}</h1>
+        <h1>{{ user_data['user_name'] }}</h1>
     </div><br>
     <div class="background-box">
         <div class="create-account-date-box">
-            <p>You have bin with us since: {{ create_account_date }}<br>Your reputation: {{ reputation }}</p>
+            <p>You have bin with us since: {{ user_data['registration_time'] }}<br>Your reputation: {{ user_data['reputation'] }}</p>
         </div><br>
         <div>
             <a class="ask-user-button" href="/user/<user_id>/questions">Your questions<br>{{ questions }}</a>
             <a class="ask-user-button" href="/user/<user_id>/answers">Your answers<br>{{ answers }}</a>
             <a class="ask-user-button" href="/user/<user_id>/comments">Your comments<br>{{ comments }}</a>
             {% if url == "/user/<user_id>/questions" %}
-                <h1>questions</h1>
+                <h1>{{ user_questions['message'] }}</h1>
             {% elif url == "/user/<user_id>/answers" %}
                 <h1>answers</h1>
             {% elif url == "/user/<user_id>/comments" %}
