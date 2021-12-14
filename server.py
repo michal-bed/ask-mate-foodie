@@ -158,10 +158,12 @@ def edit_question(question_id):
 
 @app.route('/question/<question_id>/delete')
 def remove_question(question_id):
-    answers_images = data_manager.get_all_images_from_question_answers(question_id)
-    data_manager.remove_image(answers_images)
-    question_image = data_manager.delete_question_by_id(question_id)
-    data_manager.remove_file(question_image)
+    question = data_manager.get_one_question(question_id)[0]
+    if utils.check_if_owner(question, session):
+        answers_images = data_manager.get_all_images_from_question_answers(question_id)
+        data_manager.remove_image(answers_images)
+        question_image = data_manager.delete_question_by_id(question_id)
+        data_manager.remove_file(question_image)
     return redirect("/")
 
 
@@ -187,9 +189,12 @@ def add_answer(question_id):
 
 @app.route('/answer/<answer_id>/delete')
 def remove_answer(answer_id):
-    answer_data = data_manager.delete_answer(answer_id)
-    data_manager.remove_file(answer_data['image'])
-    return redirect(f"/question/{answer_data['question_id']}")
+    answer = data_manager.get_one_answer(answer_id)[0]
+    if utils.check_if_owner(answer, session):
+        answer_data = data_manager.delete_answer(answer_id)
+        data_manager.remove_file(answer_data['image'])
+        return redirect(f"/question/{answer_data['question_id']}")
+    return redirect('/')
 
 
 @app.route('/question/<question_id>/<answer_id>/edit', methods=["GET", "POST"])
@@ -318,12 +323,15 @@ def search_question():
 
 @app.route('/comments/<comment_id>/delete')
 def remove_one_comment(comment_id):
-    comment_data = data_manager.delete_comment(comment_id)
-    question_id = comment_data['question_id']
-    answer_id = comment_data['answer_id']
-    if not answer_id:
-        return redirect(f"/question/{question_id}/comments")
-    return redirect(f"/answer/{answer_id}")
+    comment = data_manager.get_one_comment(comment_id)[0]
+    if utils.check_if_owner(comment, session):
+        comment_data = data_manager.delete_comment(comment_id)
+        question_id = comment_data['question_id']
+        answer_id = comment_data['answer_id']
+        if not answer_id:
+            return redirect(f"/question/{question_id}/comments")
+        return redirect(f"/answer/{answer_id}")
+    return redirect('/')
 
 
 @app.route('/login', methods=["GET", "POST"])
