@@ -28,7 +28,6 @@ def handle_permanent_session():
 @app.route("/")
 def list_main_page():
     """Display first five questions on the page."""
-    return render_template('user_page.html')
     key = "submission_time"
     order = "desc"
     questions = data_manager.get_all_questions(key, order, 5)
@@ -367,6 +366,27 @@ def logout():
     session.pop('user_id')
     session.pop('account_type')
     return render_template('login.html', message='You are logged out')
+
+
+@app.route("/user/<user_id>")
+def user_page():
+    return render_template('user_page.html', questions=4, answers=3, comments=7,
+                           create_account_date="2021.12.12 12.36.3738", reputation=5, user_name='Arutorek')
+
+
+@app.route("/user/<user_id>/questions")
+def get_user_questions():
+    pass
+
+
+@app.route("/user/<user_id>/answers")
+def get_user_answers():
+    pass
+
+
+@app.route("/user/<user_id>/comments")
+def get_user_comments():
+    pass
 
 
 if __name__ == "__main__":
