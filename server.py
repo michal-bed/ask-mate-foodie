@@ -28,6 +28,7 @@ def handle_permanent_session():
 @app.route("/")
 def list_main_page():
     """Display first five questions on the page."""
+    return render_template('user_page.html')
     key = "submission_time"
     order = "desc"
     questions = data_manager.get_all_questions(key, order, 5)
