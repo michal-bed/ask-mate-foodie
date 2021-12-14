@@ -21,7 +21,7 @@ CREATE TABLE question (
     vote_number integer,
     title text,
     message text,
-    user_id integer,
+    user_id integer NOT NULL ,
     image text
 );
 
@@ -32,7 +32,7 @@ CREATE TABLE answer (
     vote_number integer,
     question_id integer,
     message text,
-    user_id integer,
+    user_id integer NOT NULL,
     image text,
     accepted boolean
 );
@@ -44,7 +44,7 @@ CREATE TABLE comment (
     answer_id integer,
     message text,
     submission_time timestamp without time zone,
-    user_id integer,
+    user_id integer NOT NULL ,
     edited_count integer
 );
 
@@ -52,6 +52,7 @@ DROP TABLE IF EXISTS public.ask_mate_user;
 CREATE TABLE ask_mate_user (
     id serial NOT NULL,
     user_name text NOT NULL unique,
+    registration_time timestamp without time zone NOT NULL,
     email text NOT NULL unique,
     password varchar(255) NOT NULL,
     reputation integer NOT NULL,

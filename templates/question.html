@@ -16,6 +16,8 @@
 			</a>
 
 			<a  href="{{ url_for('list_main_page') }}">Home</a>
+
+            <a  href="{{ url_for('display_all_tags') }}">All tags</a>
 </div>
 </header>
 
@@ -107,7 +109,15 @@
 
 		</div>
 		<p class="box-list-buttons"> <a class="ask-call-button" href="/answer/{{answer.id}}">See comments</a></p>
-
+        <div class="acceptance_button">
+                        {% if answer.accepted %}
+                            <img class="acceptance" alt="accepted" src="{{ url_for('static', filename='Pictures/accepted.png') }}">
+                        {% else %}
+                            <a href="/answer/{{ answer.id }}/accept">
+                                <img class="acceptance" alt="awaiting_acceptance" src="{{ url_for('static', filename='Pictures/awaiting_acceptance.png') }}">
+                            </a>
+                        {% endif %}
+                    </div>
 	</div>
 		{% endfor %}
 

@@ -48,6 +48,7 @@ def get_one_answer(cursor, id):
     cursor.execute(query)
     return cursor.fetchall()
 
+
 @database_common.connection_handler
 def get_one_comment(cursor, id):
     query = """
@@ -213,10 +214,10 @@ def delete_comments_by_answer_id_list(answer_id):
 @database_common.connection_handler
 def add_new_question(cursor, data):
     query = """
-        INSERT INTO question(submission_time, view_number, vote_number, title, message, image)
-        VALUES ('{0}', {1}, {2}, '{3}', '{4}', '{5}')
+        INSERT INTO question(submission_time, view_number, vote_number, title, message, user_id, image)
+        VALUES ('{0}', {1}, {2}, '{3}', '{4}', {5}, '{6}')
         RETURNING id""".format(data['submission_time'], data['view_number'], data['vote_number'],
-                               data['title'], data['message'], data['image'])
+                               data['title'], data['message'], data['user_id'], data['image'])
     cursor.execute(query)
     return cursor.fetchall()[0]['id']
 
@@ -236,9 +237,13 @@ def add_views_to_question(cursor, question_id):
 @database_common.connection_handler
 def add_new_answer(cursor, data):
     query = """
-        INSERT INTO answer(submission_time, vote_number, question_id, message, image, accepted)
-        VALUES ('{0}', {1}, {2}, '{3}', '{4}', '0')""".format(data['submission_time'], data['vote_number'],
-                                                         data['question_id'], data['message'], data['image'])
+        INSERT INTO answer(submission_time, vote_number, question_id, message, user_id, image, accepted)
+        VALUES ('{0}', {1}, {2}, '{3}', {4}, '{5}', '0')""".format(data['submission_time'],
+                                                                   data['vote_number'],
+                                                                   data['question_id'],
+                                                                   data['message'],
+                                                                   data['user_id'],
+                                                                   data['image'])
     cursor.execute(query)
 
 
@@ -263,11 +268,12 @@ def add_tag_name(cursor, tag_name):
 
 @database_common.connection_handler
 def add_comment(cursor, data):
-    query = """INSERT INTO comment(question_id, answer_id, message, submission_time, edited_count)
-    VALUES ({0}, {1}, '{2}', '{3}', {4})""".format(data['question_id'],
+    query = """INSERT INTO comment(question_id, answer_id, message, submission_time, user_id, edited_count)
+    VALUES ({0}, {1}, '{2}', '{3}', {4}, {5})""".format(data['question_id'],
                                                      data['answer_id'],
                                                      data['message'],
                                                      data['submission_time'],
+                                                     data['user_id'],
                                                      data['edited_count'])
     cursor.execute(query)
 
@@ -338,6 +344,17 @@ def get_tags_by_question_id(cursor, question_id):
         cursor.execute(query, (int(question_id), ))
     except ValueError:
         pass
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_tags_and_question_count(cursor):
+    query = """SELECT name, COUNT(question.id) AS count FROM 
+    ((tag INNER JOIN question_tag ON tag.id = question_tag.tag_id) 
+    INNER JOIN question ON question.id = question_tag.question_id)
+    GROUP BY tag.id
+    ORDER BY count DESC, tag.id"""
+    cursor.execute(query)
     return cursor.fetchall()
 
 
@@ -429,12 +446,15 @@ def remove_image(items: list):
     for item in items:
         remove_file(item["image"])
 
+
 @database_common.connection_handler
 def create_user(cursor, user_data):
     query = """
-        INSERT INTO ask_mate_user(user_name, password, email, reputation, account_type)
-        VALUES(%s,%s,%s,%s,%s)"""
-    cursor.execute(query, (user_data['user_name'], user_data['password'], user_data['email'], user_data['reputation'], user_data['account_type']))
+        INSERT INTO ask_mate_user(user_name, password, registration_time, email, reputation, account_type)
+        VALUES(%s,%s,%s,%s,%s,%s)"""
+    cursor.execute(query, (user_data['user_name'], user_data['password'], user_data['registration_time'],
+                           user_data['email'], user_data['reputation'], user_data['account_type']))
+
 
 @database_common.connection_handler
 def get_one_user(cursor, user_name):
