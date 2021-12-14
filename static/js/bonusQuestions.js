@@ -57,7 +57,7 @@ function getFilteredItems(items, filterValue) {
                               : items.filter(item => item["Description"].match(new RegExp(searchedPhrase, 'i'))));
         }
         searchedPhrase.replace(/^(!)/, '');
-        console.log(`searchedPhrase: ${searchedPhrase} | ${searchedPhrase.replace(/^(\!)/, "")}`);
+        console.log(`searchedPhrase: ${searchedPhrase} | ${searchedPhrase.replace(/^(!)/, "")}`);
         return (ifExclude ? items.filter(item => !item["Title"].match(new RegExp(searchedPhrase, 'i')))
                           : items.filter(item => item["Title"].match(new RegExp(searchedPhrase, 'i'))));
     }
