@@ -126,7 +126,8 @@ def add_question():
                 'vote_number': 0,
                 'title': request.form['title'],
                 'message': request.form['message'],
-                'image': upload_file(request.files['image'])}
+                'image': upload_file(request.files['image']),
+                'user_id': utils.get_user_id(session)}
         data['message'] = utils.replacing_special_keys(data['message'])
         data['title'] = utils.replacing_special_keys(data['title'])
         question_id = data_manager.add_new_question(data)
@@ -172,7 +173,8 @@ def add_answer(question_id):
             "question_id": question_id,
             "vote_number": 0,
             "message": request.form['message'],
-            "image": upload_file(request.files['image'])
+            "image": upload_file(request.files['image']),
+            "user_id": utils.get_user_id(session)
         }
         data['message'] = utils.replacing_special_keys(data['message'])
         data_manager.add_new_answer(data)
@@ -270,7 +272,8 @@ def add_comment_to_question(question_id):
             "answer_id": 'NULL',
             "message": request.form['comment'],
             "submission_time": time.strftime("%Y-%m-%d %H:%M:%S", datetime.datetime.now().timetuple()),
-            "edited_count": 0
+            "edited_count": 0,
+            "user_id": utils.get_user_id(session)
         }
         data_manager.add_comment(data)
         return redirect(f'/question/{question_id}/comments')
@@ -289,7 +292,8 @@ def add_comment_to_answer(answer_id):
             "answer_id": answer_id,
             "message": request.form['comment'],
             "submission_time": time.strftime("%Y-%m-%d %H:%M:%S", datetime.datetime.now().timetuple()),
-            "edited_count": 0
+            "edited_count": 0,
+            "user_id": utils.get_user_id(session)
         }
         data_manager.add_comment(data)
         return redirect(f'/answer/{answer_id}')
