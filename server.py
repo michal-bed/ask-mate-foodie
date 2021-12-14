@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, flash
 from data_manager import upload_file
 from werkzeug.security import generate_password_hash, check_password_hash
 import data_manager
@@ -152,6 +152,7 @@ def edit_question(question_id):
             data_manager.remove_image([the_question])
             data_manager.edit_question(question_id, data)
             return redirect(f'/question/{question_id}')
+    flash("You can not edit the question.")
     return redirect('/')
 
 
@@ -163,6 +164,7 @@ def remove_question(question_id):
         data_manager.remove_image(answers_images)
         question_image = data_manager.delete_question_by_id(question_id)
         data_manager.remove_file(question_image)
+    flash("You can not remove the question.")
     return redirect("/")
 
 
@@ -193,6 +195,7 @@ def remove_answer(answer_id):
         answer_data = data_manager.delete_answer(answer_id)
         data_manager.remove_file(answer_data['image'])
         return redirect(f"/question/{answer_data['question_id']}")
+    flash("You can not remove the answer.")
     return redirect('/')
 
 
@@ -213,6 +216,7 @@ def edit_answer(question_id, answer_id):
             data['message'] = data['message'].replace("\'", "''")
             data_manager.edit_answer(answer_id, data)
             return redirect(f'/question/{question_id}#{answer_id}')
+    flash("You can not edit the answer.")
     return redirect('/')
 
 
@@ -231,6 +235,7 @@ def edit_comment_to_question(question_id, comment_id):
 
             data_manager.edit_comment(comment_id, data)
             return redirect(f'/question/{question_id}/comments')
+    flash("You can not edit the comment.")
     return redirect('/')
 
 
@@ -249,6 +254,7 @@ def edit_comment_to_answer(answer_id, question_id, comment_id):
 
             data_manager.edit_comment(comment_id, data)
             return redirect(f'/answer/{answer_id}#{comment_id}')
+    flash("You can not edit the comment.")
     return redirect('/')
 
 
