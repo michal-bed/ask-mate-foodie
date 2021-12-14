@@ -5,6 +5,13 @@
 	<title>Foodie Helpdesk</title>
 	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+{% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">
+        <script type="text/javascript">
+			alert('{{ message }}');
+		</script>
+    </div>
+{% endfor %}
 <header class="header">
 <div class="topnav">
 	<! – HEADER –>
