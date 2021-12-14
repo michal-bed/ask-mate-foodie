@@ -1,12 +1,7 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
+{% block head %}<title>Foodie Helpdesk</title>{% endblock %}
 
-<head>
-	<meta charset="UTF-8">
-	<title>Foodie Helpdesk</title>
-	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-
-<body>
+{% block body %}
 	<! – HEADER –>
 <header class="header">
 <div class="topnav">
@@ -16,6 +11,8 @@
 			</a>
 
 			<a  href="{{ url_for('list_main_page') }}">Home</a>
+
+            <a  href="{{ url_for('display_all_tags') }}">All tags</a>
 </div>
 </header>
 
@@ -78,5 +75,5 @@
 		<p class="date">Edited {{comment.edited_count}} times</p>
 	</div>
 		{% endfor %}
-</body>
+{% endblock %}
 

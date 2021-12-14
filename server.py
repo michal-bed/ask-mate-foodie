@@ -1,6 +1,4 @@
-from flask import Flask, render_template, request, redirect, session
-
-import bonus_questions
+from flask import Flask, render_template, request, redirect, session, flash
 from data_manager import upload_file
 from werkzeug.security import generate_password_hash, check_password_hash
 import data_manager
@@ -10,6 +8,7 @@ import encrypter
 import datetime
 import session_common
 import utils
+import bonus_questions
 
 
 UPLOAD_FOLDER = './static/upload'
@@ -160,6 +159,7 @@ def edit_question(question_id):
             data_manager.remove_image([the_question])
             data_manager.edit_question(question_id, data)
             return redirect(f'/question/{question_id}')
+    flash("You can not edit the question.")
     return redirect('/')
 
 
@@ -171,6 +171,7 @@ def remove_question(question_id):
         data_manager.remove_image(answers_images)
         question_image = data_manager.delete_question_by_id(question_id)
         data_manager.remove_file(question_image)
+    flash("You can not remove the question.")
     return redirect("/")
 
 
@@ -201,6 +202,7 @@ def remove_answer(answer_id):
         answer_data = data_manager.delete_answer(answer_id)
         data_manager.remove_file(answer_data['image'])
         return redirect(f"/question/{answer_data['question_id']}")
+    flash("You can not remove the answer.")
     return redirect('/')
 
 
@@ -221,6 +223,7 @@ def edit_answer(question_id, answer_id):
             data['message'] = data['message'].replace("\'", "''")
             data_manager.edit_answer(answer_id, data)
             return redirect(f'/question/{question_id}#{answer_id}')
+    flash("You can not edit the answer.")
     return redirect('/')
 
 
@@ -239,6 +242,7 @@ def edit_comment_to_question(question_id, comment_id):
 
             data_manager.edit_comment(comment_id, data)
             return redirect(f'/question/{question_id}/comments')
+    flash("You can not edit the comment.")
     return redirect('/')
 
 
@@ -257,6 +261,7 @@ def edit_comment_to_answer(answer_id, question_id, comment_id):
 
             data_manager.edit_comment(comment_id, data)
             return redirect(f'/answer/{answer_id}#{comment_id}')
+    flash("You can not edit the comment.")
     return redirect('/')
 
 
@@ -266,6 +271,12 @@ def add_tags_to_question(question_id):
         return utils.add_tag_if_get_method(question_id)
     elif request.method == "POST":
         return utils.add_tag_if_post_method(question_id)
+
+
+@app.route('/tags')
+def display_all_tags():
+    all_tags = data_manager.get_tags_and_question_count()
+    return render_template('tags.html', all_tags=all_tags)
 
 
 @app.route('/question/<question_id>/tag/<tag_id>/delete')
@@ -343,6 +354,9 @@ def remove_one_comment(comment_id):
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
+    if 'login' in session:
+        flash("You can not login if you are logged in now.")
+        return redirect('/')
     if request.method == 'POST':
         user_name = request.form['user_name']
         password = request.form['password']
@@ -384,6 +398,7 @@ def register():
 
 
 @app.route('/logout', methods=["GET"])
+@session_common.require_login
 def logout():
     session.pop('login')
     session.pop('user_name')

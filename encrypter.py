@@ -1,6 +1,6 @@
 from cryptography.fernet import Fernet
 
-key = Fernet.generate_key() # key which encrypts and decrypts
+key = Fernet.generate_key()  # key which encrypts and decrypts
 
 
 def encrypt(value):

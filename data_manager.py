@@ -348,6 +348,17 @@ def get_tags_by_question_id(cursor, question_id):
 
 
 @database_common.connection_handler
+def get_tags_and_question_count(cursor):
+    query = """SELECT name, COUNT(question.id) AS count FROM 
+    ((tag INNER JOIN question_tag ON tag.id = question_tag.tag_id) 
+    INNER JOIN question ON question.id = question_tag.question_id)
+    GROUP BY tag.id
+    ORDER BY count DESC, tag.id"""
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
 def searching_questions_by_phrase(cursor, search_phrase):
     """serching in database question by phrase.
        If user try to hack database safe algoritm starts"""

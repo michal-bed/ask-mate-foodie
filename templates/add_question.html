@@ -1,13 +1,7 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
+{% block head %}<title>Foodie Helpdesk</title>{% endblock %}
 
-<head>
-	<meta charset="UTF-8">
-	<title>Foodie Helpdesk</title>
-	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-
-<body>
-	<! – HEADER –>
+{% block body %}
 <header class="header">
 <div class="topnav">
 	<! – HEADER –>
@@ -16,6 +10,8 @@
 			</a>
 
 			<a  href="{{ url_for('list_main_page') }}">Home</a>
+
+            <a  href="{{ url_for('display_all_tags') }}">All tags</a>
 </div>
 </header>
 	<div class="wrapp-around">
@@ -59,4 +55,4 @@
 			</div>
 		</div>
 	</div>
-</body>
+{% endblock %}
