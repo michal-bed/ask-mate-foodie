@@ -198,7 +198,8 @@ def add_answer(question_id):
             "question_id": question_id,
             "vote_number": 0,
             "message": request.form['message'],
-            "image": upload_file(request.files['image'])
+            "image": upload_file(request.files['image']),
+            "accepted": 0
         }
         data['message'] = replacing_special_keys(data['message'])
         data_manager.add_new_answer(data)
@@ -227,7 +228,8 @@ def edit_answer(question_id, answer_id):
                 'question_id': question_id,
                 'vote_number': 0,
                 'message': request.form['message'],
-                'image': upload_file(request.files['image'])}
+                'image': upload_file(request.files['image']),
+                'accepted': the_answer['accepted']}
         data['message'] = data['message'].replace("\'", "''")
         data_manager.edit_answer(answer_id, data)
         return redirect(f'/question/{question_id}#{answer_id}')
@@ -377,6 +379,16 @@ def mark_phrase(results, phrase):
     for result in results:
         result['title'] = re.sub(re.escape(phrase), f'<mark>{phrase}</mark>', result['title'], flags=re.IGNORECASE)
         result['message'] = re.sub(re.escape(phrase), f'<mark>{phrase}</mark>', result['message'], flags=re.IGNORECASE)
+
+
+@app.route('/answer/<answer_id>/accept', methods=["GET", "POST"])
+def accept_answer(answer_id):
+    answer_to_accept = data_manager.get_one_answer(answer_id)[0]
+    user_id = answer_to_accept['user_id']
+    if request.method == "GET":
+        answer_to_accept['accepted'] = '1'
+        data_manager.edit_answer(answer_id, answer_to_accept)
+    return redirect(f'/answer/{answer_id}')
 
 
 @app.route('/search')

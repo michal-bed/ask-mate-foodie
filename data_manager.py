@@ -237,7 +237,7 @@ def add_views_to_question(cursor, question_id):
 def add_new_answer(cursor, data):
     query = """
         INSERT INTO answer(submission_time, vote_number, question_id, message, image, accepted)
-        VALUES ('{0}', {1}, {2}, '{3}', '{4}', accepted = 0)""".format(data['submission_time'], data['vote_number'],
+        VALUES ('{0}', {1}, {2}, '{3}', '{4}', '0')""".format(data['submission_time'], data['vote_number'],
                                                          data['question_id'], data['message'], data['image'])
     cursor.execute(query)
 
@@ -376,9 +376,9 @@ def edit_answer(cursor, answer_id, data):
     query = """
         UPDATE answer
         SET submission_time = '{0}', vote_number = {1}, question_id = {2},  
-                                                    message = '{3}', image = '{4}'
-        WHERE id = {5}""".format(data['submission_time'], data['vote_number'], data['question_id'],
-                                 data['message'], data['image'], answer_id)
+                                                    message = '{3}', image = '{4}', accepted = '{5}'
+        WHERE id = {6}""".format(data['submission_time'], data['vote_number'], data['question_id'],
+                                 data['message'], data['image'], data['accepted'], answer_id)
     cursor.execute(query)
 
 

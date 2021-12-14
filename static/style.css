@@ -265,6 +265,7 @@ a.ask-call-button {
     color: #525862
 }
 
+
 .thumb {
     width: 20px
 }
@@ -278,16 +279,22 @@ a.ask-call-button {
 .box-list-buttons {
     position: absolute;
     bottom: 30px;
-    right: 30px
+    right: 75px
 }
 
 .edit-delete {
     position: absolute;
-    top: 30px;
+    top: 45px;
     right: 30px;
     color: #C76700
 }
 
+.acceptance {
+    position: absolute;
+    width: 52px;
+    bottom: 45px;
+    right: 15px;
+}
 
 /**********add answer page*********/
 
