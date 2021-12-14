@@ -429,12 +429,14 @@ def remove_image(items: list):
     for item in items:
         remove_file(item["image"])
 
+
 @database_common.connection_handler
 def create_user(cursor, user_data):
     query = """
         INSERT INTO ask_mate_user(user_name, password, email, reputation, account_type)
         VALUES(%s,%s,%s,%s,%s)"""
     cursor.execute(query, (user_data['user_name'], user_data['password'], user_data['email'], user_data['reputation'], user_data['account_type']))
+
 
 @database_common.connection_handler
 def get_one_user(cursor, user_name):
