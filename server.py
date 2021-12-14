@@ -266,6 +266,12 @@ def add_tags_to_question(question_id):
         return utils.add_tag_if_post_method(question_id)
 
 
+@app.route('/tags')
+def display_all_tags():
+    all_tags = data_manager.get_tags_and_question_count()
+    return render_template('tags.html', all_tags=all_tags)
+
+
 @app.route('/question/<question_id>/tag/<tag_id>/delete')
 def delete_tag_from_question(question_id, tag_id):
     redirect_to = request.args.get("redirect_to")
