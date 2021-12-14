@@ -388,6 +388,7 @@ def register():
 
 
 @app.route('/logout', methods=["GET"])
+@session_common.require_login
 def logout():
     session.pop('login')
     session.pop('user_name')
