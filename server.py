@@ -348,8 +348,12 @@ def register():
         if not re.match(r'[^@]+@+[^@]+\.[^@]', mail):
             return render_template('register.html', message='wrong email')
 
-        user_data = {'user_name': request.form['user_name'], 'reputation': 0, 'account_type': 'basic',
-                     'password': generate_password_hash(request.form['password']), 'email': request.form['email']}
+        user_data = {'user_name': request.form['user_name'],
+                     'reputation': 0,
+                     'account_type': 'basic',
+                     'password': generate_password_hash(request.form['password']),
+                     'email': request.form['email'],
+                     'registration_time': time.strftime("%Y-%m-%d %H:%M:%S", datetime.datetime.now().timetuple())}
         data_manager.create_user(user_data)
 
         return redirect("/login")

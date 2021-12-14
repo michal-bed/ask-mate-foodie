@@ -433,9 +433,10 @@ def remove_image(items: list):
 @database_common.connection_handler
 def create_user(cursor, user_data):
     query = """
-        INSERT INTO ask_mate_user(user_name, password, email, reputation, account_type)
-        VALUES(%s,%s,%s,%s,%s)"""
-    cursor.execute(query, (user_data['user_name'], user_data['password'], user_data['email'], user_data['reputation'], user_data['account_type']))
+        INSERT INTO ask_mate_user(user_name, password, registration_time, email, reputation, account_type)
+        VALUES(%s,%s,%s,%s,%s,%s)"""
+    cursor.execute(query, (user_data['user_name'], user_data['password'], user_data['registration_time'],
+                           user_data['email'], user_data['reputation'], user_data['account_type']))
 
 
 @database_common.connection_handler
