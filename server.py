@@ -327,6 +327,11 @@ def add_tags_to_question(question_id):
         return add_tag_if_post_method(question_id)
 
 
+@app.route('/tags')
+def display_all_tags():
+    pass
+
+
 @app.route('/question/<question_id>/tag/<tag_id>/delete')
 def delete_tag_from_question(question_id, tag_id):
     redirect_to = request.args.get("redirect_to")
