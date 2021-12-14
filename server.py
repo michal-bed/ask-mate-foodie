@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request, redirect, session
+
+import bonus_questions
 from data_manager import upload_file
 from werkzeug.security import generate_password_hash, check_password_hash
 import data_manager
@@ -57,6 +59,12 @@ def question(question_id):
     answers = data_manager.get_all_answers_for_question(question_id, key, order)
     tags = utils.collect_all_tags_for_one_question(selected_question)
     return render_template("question.html", question=selected_question, answers=answers, last_key=key, tags=tags)
+
+
+@app.route('/bonus-questions')
+def bonus_question():
+    """Display table with bonus questions"""
+    return render_template('bonus_questions.html', questions=bonus_questions.SAMPLE_QUESTIONS)
 
 
 @app.route('/question/<question_id>/comments')
