@@ -104,3 +104,9 @@ def get_user_id(session):
 def decrypt_user_id(user_id):
     """Decrypt user id from session."""
     return int(encrypter.decrypt(user_id))
+
+
+def check_if_owner(record, session):
+    """Check is in actual session belong to the record owner."""
+    user_id = get_user_id(session)
+    return user_id == record['user_id']
