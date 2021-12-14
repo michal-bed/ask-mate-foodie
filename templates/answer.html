@@ -1,12 +1,7 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
+{% block head %}<title>Foodie Helpdesk</title>{% endblock %}
 
-<head>
-	<meta charset="UTF-8">
-	<title>Foodie Helpdesk</title>
-	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-
-<body>
+{% block body %}
 	<! – HEADER –>
 <header class="header">
 <div class="topnav">
@@ -88,5 +83,5 @@
 		<p class="date">Edited {{comment.edited_count}} times</p>
 	</div>
 		{% endfor %}
-</body>
+{% endblock %}
 

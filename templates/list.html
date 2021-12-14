@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8">
-	<title>Foodie Helpdesk</title>
-	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
+
+{% extends 'base.html' %}
+{% block head %}<title>Foodie Helpdesk</title>
 {% for message in get_flashed_messages() %}
     <div class="alert alert-warning">
         <script type="text/javascript">
@@ -12,6 +8,11 @@
 		</script>
     </div>
 {% endfor %}
+{% endblock %}
+
+{% block body %}
+
+
 <header class="header">
 <div class="topnav">
 	<! – HEADER –>
@@ -28,23 +29,21 @@
 </div>
 </header>
 <div>
+
 	<! – TOP BANNER –>
-	<div class="container">
-        <div class="banner">
-            <h2 class="banner-tag">
-                You got lost in the kitchen?</h2>
-            <div class="ask-call-box">
-                <div id="call-title">
-                 <p>What are you struggling with?</p>
-            </div>
-            <div id="call-btn"><a class="ask-call-button" href="{{ url_for('add_question') }}">Ask your question</a>
-            </div>
-        </div>
-        </div>
-
-	<! – CALL TO ACTION BUTTON –>
-
-
+		<div class="container">
+			<div class="banner">
+				<h2 class="banner-tag">
+					You got lost in the kitchen?</h2>
+				<div class="ask-call-box">
+					<div id="call-title">
+					 <p>What are you struggling with?</p>
+					</div>
+					<div id="call-btn"><a class="ask-call-button" href="{{ url_for('add_question') }}">Ask your question</a>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<! – QUESTIONS PARAGRAPH WITH SEARCH FILTERS –>
 	<div id="main-header-question">
@@ -142,6 +141,6 @@
 	</div>
 	{% endfor %}
 
-</body>
 
-</html>
+{% endblock %}
+
