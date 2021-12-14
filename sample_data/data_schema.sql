@@ -52,6 +52,7 @@ DROP TABLE IF EXISTS public.ask_mate_user;
 CREATE TABLE ask_mate_user (
     id serial NOT NULL,
     user_name text NOT NULL unique,
+    registration_time timestamp without time zone NOT NULL,
     email text NOT NULL unique,
     password varchar(255) NOT NULL,
     reputation integer NOT NULL,
