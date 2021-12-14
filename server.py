@@ -44,12 +44,12 @@ def handle_permanent_session():
 @app.route("/")
 def list_main_page():
     """Display first five questions on the page."""
-    # key = "submission_time"
-    # order = "desc"
-    # questions = data_manager.get_all_questions(key, order, 5)
-    # tags = collect_all_tags_for_questions(questions)
-    # return render_template('list.html', questions_data=questions, last_key=key, last_order=order, tags=tags, url='/', limit="true")
-    return render_template('user_page.html')
+    key = "submission_time"
+    order = "desc"
+    questions = data_manager.get_all_questions(key, order, 5)
+    tags = collect_all_tags_for_questions(questions)
+    return render_template('list.html', questions_data=questions, last_key=key, last_order=order, tags=tags, url='/', limit="true")
+    # return render_template('user_page.html')
 
 
 @app.route('/list')
