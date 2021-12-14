@@ -347,6 +347,9 @@ def remove_one_comment(comment_id):
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
+    if 'login' in session:
+        flash("You can not login if you are logged in now.")
+        return redirect('/')
     if request.method == 'POST':
         user_name = request.form['user_name']
         password = request.form['password']
