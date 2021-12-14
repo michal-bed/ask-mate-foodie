@@ -1,13 +1,7 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
+{% block head %}<title>Foodie Helpdesk</title>{% endblock %}
 
-<head>
-	<meta charset="UTF-8">
-	<title>Foodie Helpdesk</title>
-	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-
-<body>
-	<! – HEADER –>
+{% block body %}
 <header class="header">
 <div class="topnav">
 	<! – HEADER –>
@@ -113,5 +107,5 @@
 	</div>
 		{% endfor %}
 
-</body>
+{% endblock %}
 
