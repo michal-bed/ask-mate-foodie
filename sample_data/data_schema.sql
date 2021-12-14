@@ -21,7 +21,7 @@ CREATE TABLE question (
     vote_number integer,
     title text,
     message text,
-    user_id integer,
+    user_id integer NOT NULL ,
     image text
 );
 
@@ -32,7 +32,7 @@ CREATE TABLE answer (
     vote_number integer,
     question_id integer,
     message text,
-    user_id integer,
+    user_id integer NOT NULL,
     image text,
     accepted boolean
 );
@@ -44,7 +44,7 @@ CREATE TABLE comment (
     answer_id integer,
     message text,
     submission_time timestamp without time zone,
-    user_id integer,
+    user_id integer NOT NULL ,
     edited_count integer
 );
 

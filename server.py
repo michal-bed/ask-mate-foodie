@@ -32,8 +32,7 @@ def list_main_page():
     order = "desc"
     questions = data_manager.get_all_questions(key, order, 5)
     tags = utils.collect_all_tags_for_questions(questions)
-    return render_template('list.html', questions_data=questions, last_key=key, last_order=order, tags=tags,
-                           url='/', limit="true")
+    return render_template('list.html', questions_data=questions, last_key=key, last_order=order, tags=tags, url='/', limit="true")
 
 
 @app.route('/list')
@@ -126,7 +125,8 @@ def add_question():
                 'vote_number': 0,
                 'title': request.form['title'],
                 'message': request.form['message'],
-                'image': upload_file(request.files['image'])}
+                'image': upload_file(request.files['image']),
+                'user_id': utils.get_user_id(session)}
         data['message'] = utils.replacing_special_keys(data['message'])
         data['title'] = utils.replacing_special_keys(data['title'])
         question_id = data_manager.add_new_question(data)
@@ -137,29 +137,32 @@ def add_question():
 @app.route('/question/<question_id>/edit', methods=["GET", "POST"])
 def edit_question(question_id):
     the_question = data_manager.get_one_question(question_id)[0]
-    if request.method == 'GET':
-        return render_template('add_question.html', question=the_question)
-    if request.method == 'POST':
-        data = {'submission_time': time.strftime("%Y-%m-%d %H:%M:%S", datetime.datetime.now().timetuple()),
-                'view_number': 0,
-                'vote_number': 0,
-                'title': request.form['title'],
-                'message': request.form['message'],
-                'image': upload_file(request.files['image'])}
-        data['message'] = data['message'].replace("\'", "''")
-        data['title'] = data['title'].replace("\'", "''")
-        data_manager.remove_image([the_question])
-        data_manager.edit_question(question_id, data)
-        return redirect(f'/question/{question_id}')
+    if utils.check_if_owner(the_question, session):
+        if request.method == 'GET':
+            return render_template('add_question.html', question=the_question)
+        if request.method == 'POST':
+            data = {'submission_time': time.strftime("%Y-%m-%d %H:%M:%S", datetime.datetime.now().timetuple()),
+                    'view_number': 0,
+                    'vote_number': 0,
+                    'title': request.form['title'],
+                    'message': request.form['message'],
+                    'image': upload_file(request.files['image'])}
+            data['message'] = data['message'].replace("\'", "''")
+            data['title'] = data['title'].replace("\'", "''")
+            data_manager.remove_image([the_question])
+            data_manager.edit_question(question_id, data)
+            return redirect(f'/question/{question_id}')
     return redirect('/')
 
 
 @app.route('/question/<question_id>/delete')
 def remove_question(question_id):
-    answers_images = data_manager.get_all_images_from_question_answers(question_id)
-    data_manager.remove_image(answers_images)
-    question_image = data_manager.delete_question_by_id(question_id)
-    data_manager.remove_file(question_image)
+    question = data_manager.get_one_question(question_id)[0]
+    if utils.check_if_owner(question, session):
+        answers_images = data_manager.get_all_images_from_question_answers(question_id)
+        data_manager.remove_image(answers_images)
+        question_image = data_manager.delete_question_by_id(question_id)
+        data_manager.remove_file(question_image)
     return redirect("/")
 
 
@@ -172,7 +175,8 @@ def add_answer(question_id):
             "question_id": question_id,
             "vote_number": 0,
             "message": request.form['message'],
-            "image": upload_file(request.files['image'])
+            "image": upload_file(request.files['image']),
+            "user_id": utils.get_user_id(session)
         }
         data['message'] = utils.replacing_special_keys(data['message'])
         data_manager.add_new_answer(data)
@@ -184,27 +188,31 @@ def add_answer(question_id):
 
 @app.route('/answer/<answer_id>/delete')
 def remove_answer(answer_id):
-    answer_data = data_manager.delete_answer(answer_id)
-    data_manager.remove_file(answer_data['image'])
-    return redirect(f"/question/{answer_data['question_id']}")
+    answer = data_manager.get_one_answer(answer_id)[0]
+    if utils.check_if_owner(answer, session):
+        answer_data = data_manager.delete_answer(answer_id)
+        data_manager.remove_file(answer_data['image'])
+        return redirect(f"/question/{answer_data['question_id']}")
+    return redirect('/')
 
 
 @app.route('/question/<question_id>/<answer_id>/edit', methods=["GET", "POST"])
 def edit_answer(question_id, answer_id):
     the_question = data_manager.get_one_question(question_id)[0]
     the_answer = data_manager.get_one_answer(answer_id)[0]
-    if request.method == 'GET':
-        return render_template('add_answer.html', question=the_question, answer=the_answer)
-    if request.method == 'POST':
-        data = {'submission_time': time.strftime("%Y-%m-%d %H:%M:%S", datetime.datetime.now().timetuple()),
-                'view_number': 0,
-                'question_id': question_id,
-                'vote_number': 0,
-                'message': request.form['message'],
-                'image': upload_file(request.files['image'])}
-        data['message'] = data['message'].replace("\'", "''")
-        data_manager.edit_answer(answer_id, data)
-        return redirect(f'/question/{question_id}#{answer_id}')
+    if utils.check_if_owner(the_answer, session):
+        if request.method == 'GET':
+            return render_template('add_answer.html', question=the_question, answer=the_answer)
+        if request.method == 'POST':
+            data = {'submission_time': time.strftime("%Y-%m-%d %H:%M:%S", datetime.datetime.now().timetuple()),
+                    'view_number': 0,
+                    'question_id': question_id,
+                    'vote_number': 0,
+                    'message': request.form['message'],
+                    'image': upload_file(request.files['image'])}
+            data['message'] = data['message'].replace("\'", "''")
+            data_manager.edit_answer(answer_id, data)
+            return redirect(f'/question/{question_id}#{answer_id}')
     return redirect('/')
 
 
@@ -212,16 +220,17 @@ def edit_answer(question_id, answer_id):
 def edit_comment_to_question(question_id, comment_id):
     the_question = data_manager.get_one_question(question_id)[0]
     the_comment = data_manager.get_one_comment(comment_id)[0]
-    if request.method == 'GET':
-        return render_template('add_comment.html', question=the_question, comment=the_comment,
-                               comment_message=the_comment['message'], header='Question', action='Edit')
-    if request.method == 'POST':
-        data = {'question_id': question_id, 'message': request.form['comment'],
-                'submission_time': time.strftime("%Y-%m-%d %H:%M:%S", datetime.datetime.now().timetuple()),
-                'edited_count': the_comment["edited_count"]+1}
+    if utils.check_if_owner(the_comment, session):
+        if request.method == 'GET':
+            return render_template('add_comment.html', question=the_question, comment=the_comment,
+                                   comment_message=the_comment['message'], header='Question', action='Edit')
+        if request.method == 'POST':
+            data = {'question_id': question_id, 'message': request.form['comment'],
+                    'submission_time': time.strftime("%Y-%m-%d %H:%M:%S", datetime.datetime.now().timetuple()),
+                    'edited_count': the_comment["edited_count"]+1}
 
-        data_manager.edit_comment(comment_id, data)
-        return redirect(f'/question/{question_id}/comments')
+            data_manager.edit_comment(comment_id, data)
+            return redirect(f'/question/{question_id}/comments')
     return redirect('/')
 
 
@@ -229,16 +238,17 @@ def edit_comment_to_question(question_id, comment_id):
 def edit_comment_to_answer(answer_id, question_id, comment_id):
     the_answer = data_manager.get_one_answer(answer_id)[0]
     the_comment = data_manager.get_one_comment(comment_id)[0]
-    if request.method == 'GET':
-        return render_template('add_comment.html', answer=the_answer, question=None, comment=the_comment,
-                               comment_message=the_comment['message'], header='Answer', action='Edit')
-    if request.method == 'POST':
-        data = {'question_id': question_id, 'answer_id': answer_id, 'message': request.form['comment'],
-                'submission_time': time.strftime("%Y-%m-%d %H:%M:%S", datetime.datetime.now().timetuple()),
-                'edited_count': the_comment["edited_count"]+1}
+    if utils.check_if_owner(the_comment, session):
+        if request.method == 'GET':
+            return render_template('add_comment.html', answer=the_answer, question=None, comment=the_comment,
+                                   comment_message=the_comment['message'], header='Answer', action='Edit')
+        if request.method == 'POST':
+            data = {'question_id': question_id, 'answer_id': answer_id, 'message': request.form['comment'],
+                    'submission_time': time.strftime("%Y-%m-%d %H:%M:%S", datetime.datetime.now().timetuple()),
+                    'edited_count': the_comment["edited_count"]+1}
 
-        data_manager.edit_comment(comment_id, data)
-        return redirect(f'/answer/{answer_id}#{comment_id}')
+            data_manager.edit_comment(comment_id, data)
+            return redirect(f'/answer/{answer_id}#{comment_id}')
     return redirect('/')
 
 
@@ -276,7 +286,8 @@ def add_comment_to_question(question_id):
             "answer_id": 'NULL',
             "message": request.form['comment'],
             "submission_time": time.strftime("%Y-%m-%d %H:%M:%S", datetime.datetime.now().timetuple()),
-            "edited_count": 0
+            "edited_count": 0,
+            "user_id": utils.get_user_id(session)
         }
         data_manager.add_comment(data)
         return redirect(f'/question/{question_id}/comments')
@@ -295,7 +306,8 @@ def add_comment_to_answer(answer_id):
             "answer_id": answer_id,
             "message": request.form['comment'],
             "submission_time": time.strftime("%Y-%m-%d %H:%M:%S", datetime.datetime.now().timetuple()),
-            "edited_count": 0
+            "edited_count": 0,
+            "user_id": utils.get_user_id(session)
         }
         data_manager.add_comment(data)
         return redirect(f'/answer/{answer_id}')
@@ -316,12 +328,15 @@ def search_question():
 
 @app.route('/comments/<comment_id>/delete')
 def remove_one_comment(comment_id):
-    comment_data = data_manager.delete_comment(comment_id)
-    question_id = comment_data['question_id']
-    answer_id = comment_data['answer_id']
-    if not answer_id:
-        return redirect(f"/question/{question_id}/comments")
-    return redirect(f"/answer/{answer_id}")
+    comment = data_manager.get_one_comment(comment_id)[0]
+    if utils.check_if_owner(comment, session):
+        comment_data = data_manager.delete_comment(comment_id)
+        question_id = comment_data['question_id']
+        answer_id = comment_data['answer_id']
+        if not answer_id:
+            return redirect(f"/question/{question_id}/comments")
+        return redirect(f"/answer/{answer_id}")
+    return redirect('/')
 
 
 @app.route('/login', methods=["GET", "POST"])
