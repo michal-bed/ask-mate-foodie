@@ -46,6 +46,10 @@ function getSortedItems(items, sortField, sortDirection) {
 function getFilteredItems(items, filterValue) {
     console.log(items)
     console.log(filterValue)
+    
+    function escapeRegExp(string) {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+    }
 
     function filterItems(ifExclude) {
         let searchedPhrase = filterValue
@@ -53,13 +57,13 @@ function getFilteredItems(items, filterValue) {
             console.log("Went into Description")
             searchedPhrase = searchedPhrase.replace(/^(!?Description:)/i, "");
             console.log(`searchedPhrase: ${searchedPhrase}`)
-            return (ifExclude ? items.filter(item => !item["Description"].match(new RegExp(searchedPhrase, 'i')))
-                              : items.filter(item => item["Description"].match(new RegExp(searchedPhrase, 'i'))));
+            return (ifExclude ? items.filter(item => !item["Description"].match(new RegExp(escapeRegExp(searchedPhrase), 'i')))
+                              : items.filter(item => item["Description"].match(new RegExp(escapeRegExp(searchedPhrase), 'i'))));
         }
         searchedPhrase = searchedPhrase.replace(/^(!)/, '');
         console.log(`searchedPhrase: ${searchedPhrase} | ${searchedPhrase.replace(/^(!)/, "")}`);
-        return (ifExclude ? items.filter(item => !item["Title"].match(new RegExp(searchedPhrase, 'i')))
-                          : items.filter(item => item["Title"].match(new RegExp(searchedPhrase, 'i'))));
+        return (ifExclude ? items.filter(item => !item["Title"].match(new RegExp(escapeRegExp(searchedPhrase), 'i')))
+                          : items.filter(item => item["Title"].match(new RegExp(escapeRegExp(searchedPhrase), 'i'))));
     }
 
     if (filterValue.startsWith("!")) {
