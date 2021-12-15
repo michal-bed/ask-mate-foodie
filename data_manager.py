@@ -470,9 +470,10 @@ def get_one_user(cursor, user_name):
 def get_all_users(cursor):
     query = """
     SELECT 
+    ask_mate_user.id, 
     ask_mate_user.user_name as user_name, 
     ask_mate_user.registration_time as registration_time,
-    ask_mate_user.reputation as reputatuion,
+    ask_mate_user.reputation as reputation,
     count(distinct question.id) as questions,
     count(distinct answer.id) as answers,
     count(distinct comment.id) as comments
@@ -480,6 +481,6 @@ def get_all_users(cursor):
     LEFT JOIN question on ask_mate_user.id = question.user_id
     LEFT JOIN answer on ask_mate_user.id = answer.user_id
     LEFT JOIN comment on ask_mate_user.id = comment.user_id
-    GROUP BY user_name, registration_time, reputatuion;"""
+    GROUP BY ask_mate_user.id, user_name, registration_time, reputation;"""
     cursor.execute(query)
     return cursor.fetchall()
