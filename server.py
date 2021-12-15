@@ -45,7 +45,8 @@ def list_main_page_with_all_questions():
     order = request.args.get('order_direction', "desc")
     questions = data_manager.get_all_questions(key, order)
     tags = utils.collect_all_tags_for_questions(questions)
-    return render_template('list.html', questions_data=questions, last_key=key, last_order=order, tags=tags, url='/list')
+    return render_template('list.html', questions_data=questions, logged=utils.is_user_logged_in(),
+                           last_key=key, last_order=order, tags=tags, url='/list')
 
 
 @app.route('/question/<question_id>')
@@ -66,7 +67,8 @@ def question(question_id):
 @app.route('/bonus-questions')
 def bonus_question():
     """Display table with bonus questions"""
-    return render_template('bonus_questions.html', questions=bonus_questions.SAMPLE_QUESTIONS)
+    return render_template('bonus_questions.html', logged=utils.is_user_logged_in(),
+                           questions=bonus_questions.SAMPLE_QUESTIONS)
 
 
 @app.route('/question/<question_id>/comments')
@@ -78,7 +80,7 @@ def question_with_comments(question_id):
     comments = data_manager.get_all_comments_for_question(question_id, key, order)
     tags = utils.collect_all_tags_for_one_question(selected_question)
     return render_template("question_with_comments.html", question=selected_question, tags=tags, comments=comments,
-                           last_key=key)
+                           logged=utils.is_user_logged_in(), last_key=key)
 
 
 @app.route('/answer/<answer_id>')
@@ -88,7 +90,8 @@ def answer(answer_id):
     key = request.args.get('order_by', 'submission_time')
     order = request.args.get('order_direction', "desc")
     comments = data_manager.get_all_comments_for_answer(answer_id, key, order)
-    return render_template("answer.html", answer=selected_answer, comments=comments, last_key=key)
+    return render_template("answer.html", answer=selected_answer, comments=comments, logged=utils.is_user_logged_in(),
+                           last_key=key)
 
 
 @app.route('/question/<question_id>/add-vote')
@@ -145,7 +148,7 @@ def add_question():
         data['title'] = utils.replacing_special_keys(data['title'])
         question_id = data_manager.add_new_question(data)
         return redirect(f'/question/{question_id}')
-    return render_template('add_question.html')
+    return render_template('add_question.html', logged=utils.is_user_logged_in())
 
 
 @app.route('/question/<question_id>/edit', methods=["GET", "POST"])
@@ -154,7 +157,7 @@ def edit_question(question_id):
     the_question = data_manager.get_one_question(question_id)[0]
     if utils.check_if_owner(the_question, session):
         if request.method == 'GET':
-            return render_template('add_question.html', question=the_question)
+            return render_template('add_question.html', logged=utils.is_user_logged_in(), question=the_question)
         if request.method == 'POST':
             data = {'submission_time': time.strftime("%Y-%m-%d %H:%M:%S", datetime.datetime.now().timetuple()),
                     'view_number': 0,
@@ -203,7 +206,7 @@ def add_answer(question_id):
         return redirect(f'/question/{question_id}')
     if request.method == 'GET':
         the_question = data_manager.get_one_question(question_id)[0]
-        return render_template('add_answer.html', question=the_question)
+        return render_template('add_answer.html', logged=utils.is_user_logged_in(), question=the_question)
 
 
 @app.route('/answer/<answer_id>/delete')
@@ -225,7 +228,8 @@ def edit_answer(question_id, answer_id):
     the_answer = data_manager.get_one_answer(answer_id)[0]
     if utils.check_if_owner(the_answer, session):
         if request.method == 'GET':
-            return render_template('add_answer.html', question=the_question, answer=the_answer)
+            return render_template('add_answer.html', logged=utils.is_user_logged_in(),
+                                   question=the_question, answer=the_answer)
         if request.method == 'POST':
             data = {'submission_time': time.strftime("%Y-%m-%d %H:%M:%S", datetime.datetime.now().timetuple()),
                     'view_number': 0,
@@ -248,7 +252,8 @@ def edit_comment_to_question(question_id, comment_id):
     if utils.check_if_owner(the_comment, session):
         if request.method == 'GET':
             return render_template('add_comment.html', question=the_question, comment=the_comment,
-                                   comment_message=the_comment['message'], header='Question', action='Edit')
+                                   comment_message=the_comment['message'], logged=utils.is_user_logged_in(),
+                                   header='Question', action='Edit')
         if request.method == 'POST':
             data = {'question_id': question_id, 'message': request.form['comment'],
                     'submission_time': time.strftime("%Y-%m-%d %H:%M:%S", datetime.datetime.now().timetuple()),
@@ -268,7 +273,8 @@ def edit_comment_to_answer(answer_id, question_id, comment_id):
     if utils.check_if_owner(the_comment, session):
         if request.method == 'GET':
             return render_template('add_comment.html', answer=the_answer, question=None, comment=the_comment,
-                                   comment_message=the_comment['message'], header='Answer', action='Edit')
+                                   comment_message=the_comment['message'], header='Answer',
+                                   logged=utils.is_user_logged_in(),action='Edit')
         if request.method == 'POST':
             data = {'question_id': question_id, 'answer_id': answer_id, 'message': request.form['comment'],
                     'submission_time': time.strftime("%Y-%m-%d %H:%M:%S", datetime.datetime.now().timetuple()),
@@ -293,7 +299,7 @@ def add_tags_to_question(question_id):
 @session_common.require_login
 def display_all_tags():
     all_tags = data_manager.get_tags_and_question_count()
-    return render_template('tags.html', all_tags=all_tags)
+    return render_template('tags.html', logged=utils.is_user_logged_in(), all_tags=all_tags)
 
 
 @app.route('/question/<question_id>/tag/<tag_id>/delete')
@@ -311,7 +317,7 @@ def add_comment_to_question(question_id):
     if request.method == 'GET':
         return render_template('add_comment.html', question=question_to_comment,
                                url=f'/question/{question_id}/new-comment',
-                               header='Question', action='Add')
+                               header='Question', logged=utils.is_user_logged_in(), action='Add')
     if request.method == 'POST':
         data = {
             "question_id": question_id,
@@ -332,7 +338,7 @@ def add_comment_to_answer(answer_id):
     if request.method == 'GET':
         return render_template('add_comment.html', question=answer_to_comment,
                                url=f'/answer/{answer_id}/new-comment',
-                               header='Answer', action='Add')
+                               header='Answer', logged=utils.is_user_logged_in(), action='Add')
     if request.method == 'POST':
         data = {
             "question_id": answer_to_comment['question_id'],
@@ -373,7 +379,7 @@ def search_question():
     utils.mark_phrase(questions, search_phrase)
     tags = utils.collect_all_tags_for_questions(questions)
     return render_template('list.html', questions_data=questions, tags=tags, last_key=key,
-                           last_order=order, url='/search')
+                           last_order=order, logged=utils.is_user_logged_in(), url='/search')
 
 
 @app.route('/comments/<comment_id>/delete')
@@ -406,8 +412,9 @@ def login():
             session['account_type'] = encrypter.encrypt(my_user['account_type'])
             return redirect("/")
         else:
-            return render_template('login.html', message='incorrect user name or password')
-    return render_template('login.html')
+            return render_template('login.html', logged=utils.is_user_logged_in(),
+                                   message='incorrect user name or password')
+    return render_template('login.html', logged=utils.is_user_logged_in())
 
 
 @app.route('/register', methods=["GET", "POST"])
@@ -417,11 +424,11 @@ def register():
     if request.method == 'POST':
         username = request.form['user_name']
         if data_manager.get_one_user(username):
-            return render_template('register.html', message='user already exists')
+            return render_template('register.html', logged=utils.is_user_logged_in(), message='user already exists')
 
         mail = request.form['email']
         if not re.match(r'[^@]+@+[^@]+\.[^@]', mail):
-            return render_template('register.html', message='wrong email')
+            return render_template('register.html', logged=utils.is_user_logged_in(), message='wrong email')
 
         user_data = {'user_name': request.form['user_name'],
                      'reputation': 0,
@@ -432,7 +439,7 @@ def register():
         data_manager.create_user(user_data)
 
         return redirect("/login")
-    return render_template('register.html')
+    return render_template('register.html', logged=utils.is_user_logged_in())
 
 
 @app.route('/logout', methods=["GET"])
@@ -442,14 +449,14 @@ def logout():
     session.pop('user_name')
     session.pop('user_id')
     session.pop('account_type')
-    return render_template('login.html', message='You are logged out')
+    return render_template('login.html', logged=utils.is_user_logged_in(), message='You are logged out')
 
 
 @app.route('/users', methods=["GET"])
 @session_common.require_login
 def all_users():
     users = data_manager.get_all_users()
-    return render_template('all_users.html', users=users)
+    return render_template('all_users.html', logged=utils.is_user_logged_in(), users=users)
 
 
 if __name__ == "__main__":
