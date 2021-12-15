@@ -9,11 +9,15 @@
     <img id="logotopbar" alt="Foodie Helpdesk Logo" src="{{ url_for('static', filename='Pictures/chefer-1.png') }}">
 			</a>
 
-			<a  href="{{ url_for('list_main_page') }}">Home</a>
-            <a  href="{{ url_for('display_all_tags') }}">All tags</a>
-			<a  href="/login">Login</a>
-			<a  href="/logout">Logout</a>
-			<a  href="/register">Register</a>
+    <a class="active" href="{{ url_for('list_main_page') }}">Home</a>
+	<a  href="{{ url_for('display_all_tags') }}">All tags</a>
+	{% if logged %}
+	<a  href="/logout">Logout</a>
+	{% else %}
+	<a  href="/login">Login</a>
+	<a  href="/register">Register</a>
+	{% endif %}
+	<a  href="/users">Users</a>
 </div>
 </header>
 <div>
