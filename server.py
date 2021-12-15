@@ -63,6 +63,7 @@ def question(question_id):
 
 
 @app.route('/bonus-questions')
+@session_common.require_login
 def bonus_question():
     """Display table with bonus questions"""
     return render_template('bonus_questions.html', questions=bonus_questions.SAMPLE_QUESTIONS)
@@ -91,6 +92,7 @@ def answer(answer_id):
 
 
 @app.route('/question/<question_id>/add-vote')
+@session_common.require_login
 def add_vote_to_question(question_id):
     """Add vote to the question."""
     data_manager.add_vote('question', question_id)
@@ -98,6 +100,7 @@ def add_vote_to_question(question_id):
 
 
 @app.route('/question/<question_id>/remove-vote')
+@session_common.require_login
 def remove_vote_from_question(question_id):
     """Remove vote from the question."""
     data_manager.remove_vote('question', question_id)
@@ -105,6 +108,7 @@ def remove_vote_from_question(question_id):
 
 
 @app.route('/answer/<answer_id>/add-vote')
+@session_common.require_login
 def add_vote_to_answer(answer_id):
     """Add vote to the answer."""
     data_manager.add_vote('answer', answer_id)
@@ -115,6 +119,7 @@ def add_vote_to_answer(answer_id):
 
 
 @app.route('/answer/<answer_id>/remove-vote')
+@session_common.require_login
 def remove_vote_from_answer(answer_id):
     """Remove vote from the answer."""
     data_manager.remove_vote('answer', answer_id)
@@ -144,6 +149,7 @@ def add_question():
 
 
 @app.route('/question/<question_id>/edit', methods=["GET", "POST"])
+@session_common.require_login
 def edit_question(question_id):
     the_question = data_manager.get_one_question(question_id)[0]
     if utils.check_if_owner(the_question, session):
@@ -166,6 +172,7 @@ def edit_question(question_id):
 
 
 @app.route('/question/<question_id>/delete')
+@session_common.require_login
 def remove_question(question_id):
     question = data_manager.get_one_question(question_id)[0]
     if utils.check_if_owner(question, session):
@@ -178,6 +185,7 @@ def remove_question(question_id):
 
 
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
+@session_common.require_login
 def add_answer(question_id):
     """Add answer to the question and to the database."""
     if request.method == "POST":
@@ -199,6 +207,7 @@ def add_answer(question_id):
 
 
 @app.route('/answer/<answer_id>/delete')
+@session_common.require_login
 def remove_answer(answer_id):
     answer = data_manager.get_one_answer(answer_id)[0]
     if utils.check_if_owner(answer, session):
@@ -210,6 +219,7 @@ def remove_answer(answer_id):
 
 
 @app.route('/question/<question_id>/<answer_id>/edit', methods=["GET", "POST"])
+@session_common.require_login
 def edit_answer(question_id, answer_id):
     the_question = data_manager.get_one_question(question_id)[0]
     the_answer = data_manager.get_one_answer(answer_id)[0]
@@ -231,6 +241,7 @@ def edit_answer(question_id, answer_id):
 
 
 @app.route('/question/<question_id>/<comment_id>/edit-comment', methods=["GET", "POST"])
+@session_common.require_login
 def edit_comment_to_question(question_id, comment_id):
     the_question = data_manager.get_one_question(question_id)[0]
     the_comment = data_manager.get_one_comment(comment_id)[0]
@@ -250,6 +261,7 @@ def edit_comment_to_question(question_id, comment_id):
 
 
 @app.route('/answer/<question_id>/<answer_id>/<comment_id>/edit', methods=["GET", "POST"])
+@session_common.require_login
 def edit_comment_to_answer(answer_id, question_id, comment_id):
     the_answer = data_manager.get_one_answer(answer_id)[0]
     the_comment = data_manager.get_one_comment(comment_id)[0]
@@ -269,6 +281,7 @@ def edit_comment_to_answer(answer_id, question_id, comment_id):
 
 
 @app.route('/question/<question_id>/new-tag', methods=["GET", "POST"])
+@session_common.require_login
 def add_tags_to_question(question_id):
     if request.method == "GET":
         return utils.add_tag_if_get_method(question_id)
@@ -277,12 +290,14 @@ def add_tags_to_question(question_id):
 
 
 @app.route('/tags')
+@session_common.require_login
 def display_all_tags():
     all_tags = data_manager.get_tags_and_question_count()
     return render_template('tags.html', all_tags=all_tags)
 
 
 @app.route('/question/<question_id>/tag/<tag_id>/delete')
+@session_common.require_login
 def delete_tag_from_question(question_id, tag_id):
     redirect_to = request.args.get("redirect_to")
     data_manager.remove_tag_id_from_question_tag(question_id, tag_id)
@@ -290,6 +305,7 @@ def delete_tag_from_question(question_id, tag_id):
 
 
 @app.route('/question/<question_id>/new-comment', methods=["GET", "POST"])
+@session_common.require_login
 def add_comment_to_question(question_id):
     question_to_comment = data_manager.get_one_question(question_id)[0]
     if request.method == 'GET':
@@ -310,6 +326,7 @@ def add_comment_to_question(question_id):
 
 
 @app.route('/answer/<answer_id>/new-comment', methods=["GET", "POST"])
+@session_common.require_login
 def add_comment_to_answer(answer_id):
     answer_to_comment = data_manager.get_one_answer(answer_id)[0]
     if request.method == 'GET':
@@ -330,6 +347,7 @@ def add_comment_to_answer(answer_id):
 
 
 @app.route('/answer/<answer_id>/accept', methods=["GET", "POST"])
+@session_common.require_login
 def accept_answer(answer_id):
     answer_to_accept = data_manager.get_one_answer(answer_id)[0]
     question_of_answer = data_manager.get_one_question(answer_to_accept['question_id'])[0]
@@ -359,6 +377,7 @@ def search_question():
 
 
 @app.route('/comments/<comment_id>/delete')
+@session_common.require_login
 def remove_one_comment(comment_id):
     comment = data_manager.get_one_comment(comment_id)[0]
     if utils.check_if_owner(comment, session):
@@ -427,7 +446,7 @@ def logout():
 
 
 @app.route('/users', methods=["GET"])
-# @session_common.require_login
+@session_common.require_login
 def all_users():
     users = data_manager.get_all_users()
     return render_template('all_users.html', users=users)
