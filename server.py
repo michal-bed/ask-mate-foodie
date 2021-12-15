@@ -400,5 +400,11 @@ def logout():
     return render_template('login.html', message='You are logged out')
 
 
+@app.route('/users', methods=["GET"])
+# @session_common.require_login
+def all_users():
+    return render_template('all_users.html')
+
+
 if __name__ == "__main__":
     app.run(debug=True)
