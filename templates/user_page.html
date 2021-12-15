@@ -25,17 +25,61 @@
             <p>You have bin with us since: {{ user_data['registration_time'] }}<br>Your reputation: {{ user_data['reputation'] }}</p>
         </div><br>
         <div>
-            <a class="ask-user-button" href="/user/<user_id>/questions">Your questions<br>{{ questions }}</a>
-            <a class="ask-user-button" href="/user/<user_id>/answers">Your answers<br>{{ answers }}</a>
-            <a class="ask-user-button" href="/user/<user_id>/comments">Your comments<br>{{ comments }}</a>
-            {% if url == "/user/<user_id>/questions" %}
-                <h1>{{ user_questions['message'] }}</h1>
-            {% elif url == "/user/<user_id>/answers" %}
+            <a class="ask-user-button" href="/user/questions">Your questions<br>{{ questions }}</a>
+            <a class="ask-user-button" href="/user/answers">Your answers<br>{{ answers }}</a>
+            <a class="ask-user-button" href="/user/comments">Your comments<br>{{ comments }}</a>
+            {% if url == "/user/questions" %}
+                {% for question in user_questions %}
+                    <div class="box">
+                        <p class="date">published: {{ question["submission_time"] }} | views: {{ question["view_number"] }} </p>
+                        <div class="comment-block">
+                            {% if question['image'] %}
+                                <img class="question-photo-embed" alt="question image" src="{{ url_for('static', filename=question['image']) }}"> {% endif %}
+                                <h3 class="box-tittle">
+                                    <a href="{{ url_for('question', question_id=question['id']) }}"> {{ question["title"] | safe }}</a>
+                                </h3>
+                            <p class="list-text">{{ question["message"] | safe }}</p>
+                        </div>
+                        {% set upvote_link = "/question/" ~ question.id ~ "/add-vote?order_by=" ~ last_key ~ "&order_direction=" ~ last_order  %}
+                        {% set downvote_link ="/question/" ~ question.id ~ "/remove-vote?order_by=" ~ last_key ~ "&order_direction=" ~ last_order %}
+                        {% if limit is defined and limit == "true" %}
+                            {% set upvote_link = upvote_link ~ "&limit=true#" ~ question.id %}
+                            {% set downvote_link = downvote_link ~ "&limit=true#" ~ question.id %}
+                        {% else %}
+                            {% set upvote_link = upvote_link ~ "#" ~ question.id %}
+                            {% set downvote_link = downvote_link ~ "#" ~ question.id %}
+                        {% endif %}
+                        <div class="box-voting">
+                            <p class="date"> Number of votes: {{ question["vote_number"] }} Vote:
+                                <a href="{{upvote_link}}">
+                                    <img class="thumb" alt="thumbup" src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-10-240.png') }}">
+                                </a>
+                                <a href="{{downvote_link}}">
+
+                                    <img class="thumb" alt="thumbdown" src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-12-240.png') }}">
+                                </a>Tags:
+                                {%  for tag in tags[question["id"]] %}
+                                    {{ tag.name }}
+                                    {% if limit is not defined %}
+                                        <a href="/question/{{question.id}}/tag/{{tag.id}}/delete?order_by={{last_key}}&order_direction={{last_order}}&redirect_to=main">&#x2716</a>
+                                    {%  else %}
+                                        <a href="/question/{{question.id}}/tag/{{tag.id}}/delete?order_by={{last_key}}&order_direction={{last_order}}&redirect_to=main&limit=true">&#x2716</a>
+                                    {%  endif %}
+                                {% endfor %}
+                                {% if limit is not defined %}
+                                    <a href="/question/{{question.id}}/new-tag?order_by={{last_key}}&order_direction={{last_order}}&redirect_to=main">Add tag</a>
+                                {%  else %}
+                                    <a href="/question/{{question.id}}/new-tag?order_by={{last_key}}&order_direction={{last_order}}&redirect_to=main&limit=true">Add tag</a>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% elif url == "/user/answers" %}
                 <h1>answers</h1>
-            {% elif url == "/user/<user_id>/comments" %}
+            {% elif url == "/user/comments" %}
                 <h1>comments</h1>
             {% endif %}
-        </div>
     </div>
 </body>
 </html>

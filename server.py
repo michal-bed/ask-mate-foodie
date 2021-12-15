@@ -48,7 +48,7 @@ def list_main_page_with_all_questions():
 @app.route('/question/<question_id>')
 def question(question_id):
     """Display one question with answers."""
-    change_views = request.args.get("change_views", True)
+    chant_views = request.args.get("change_views", True)
     if change_views != "false":
         data_manager.add_views_to_question(question_id)
     selected_question = data_manager.get_one_question(question_id)[0]
@@ -384,36 +384,41 @@ def logout():
     return render_template('login.html', message='You are logged out')
 
 
-@app.route("/user/<user_id>")
-def user_page(user_id):
+@app.route("/user/")
+def user_page():
+    user_id = utils.decrypt_user_id(session.get('user_id'))
     user_data = data_manager.get_user_data(user_id)
     return render_template('user_page.html', questions=4, answers=3, comments=7,
                            user_data=user_data)
 
 
-@app.route("/user/<user_id>/questions")
-def get_user_questions(user_id):
+@app.route("/user/questions")
+def get_user_questions():
+    user_id = utils.decrypt_user_id(session.get('user_id'))
     user_data = data_manager.get_user_data(user_id)
     user_questions = data_manager.get_user_questions(user_id)
+    tags = utils.collect_all_tags_for_questions(user_questions)
     return render_template('user_page.html', questions=4, answers=3, comments=7,
                            user_data=user_data, user_questions=user_questions,
-                           url="/user/<user_id>/questions")
+                           tags=tags, url="/user/questions")
 
 
-@app.route("/user/<user_id>/answers")
-def get_user_answers(user_id):
+@app.route("/user/answers")
+def get_user_answers():
+    user_id = utils.decrypt_user_id(session.get('user_id'))
     user_data = data_manager.get_user_data(user_id)
     return render_template('user_page.html', questions=4, answers=3, comments=7,
                            user_data=user_data,
-                           url="/user/<user_id>/answers")
+                           url="/user/answers")
 
 
-@app.route("/user/<user_id>/comments")
-def get_user_comments(user_id):
+@app.route("/user/comments")
+def get_user_comments():
+    user_id = utils.decrypt_user_id(session.get('user_id'))
     user_data = data_manager.get_user_data(user_id)
     return render_template('user_page.html', questions=4, answers=3, comments=7,
                            user_data=user_data,
-                           url="/user/<user_id>/comments")
+                           url="/user/comments")
 
 
 if __name__ == "__main__":

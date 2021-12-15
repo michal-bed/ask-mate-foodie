@@ -460,8 +460,8 @@ def get_user_questions(cursor, user_id):
     query = """
     SELECT *
     FROM question
-    WHERE user_id = '{0}'""".format(user_id)
-    cursor.execute(query)
+    WHERE user_id = %s"""
+    cursor.execute(query, (int(user_id), ))
     return cursor.fetchall()
 
 
@@ -470,6 +470,6 @@ def get_user_data(cursor, user_id):
     query = """
     SELECT user_name, registration_time, reputation
     FROM ask_mate_user
-    WHERE id = {0}""".format(user_id)
-    cursor.execute(query)
+    WHERE id = %s"""
+    cursor.execute(query, (int(user_id), ))
     return cursor.fetchone()
