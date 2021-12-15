@@ -1,8 +1,8 @@
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, session
 import data_manager
 import server
 import encrypter
-
+import cryptography
 
 def collect_all_tags_for_questions(questions):
     tags = {}
@@ -82,6 +82,13 @@ def add_tag_if_post_method(question_id):
         if tag_id:
             data_manager.add_tag_id_to_question_tag(question_id, tag_id)
     return redirect_if_main(redirect_to, question_id)
+
+
+def is_user_logged_in():
+    try:
+        return get_user_id(session) >= 1
+    except (cryptography.fernet.InvalidToken, KeyError):
+        return False
 
 
 def mark_phrase(results, phrase):
