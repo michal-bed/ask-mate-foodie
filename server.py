@@ -80,7 +80,7 @@ def question_with_comments(question_id):
     comments = data_manager.get_all_comments_for_question(question_id, key, order)
     tags = utils.collect_all_tags_for_one_question(selected_question)
     return render_template("question_with_comments.html", question=selected_question, tags=tags, comments=comments,
-                           logged=utils.is_user_logged_in(), last_key=key)
+                           logged=utils.is_user_logged_in(), last_key=key, session_id=utils.get_user_id(session))
 
 
 @app.route('/answer/<answer_id>')
@@ -90,8 +90,8 @@ def answer(answer_id):
     key = request.args.get('order_by', 'submission_time')
     order = request.args.get('order_direction', "desc")
     comments = data_manager.get_all_comments_for_answer(answer_id, key, order)
-    return render_template("answer.html", answer=selected_answer, comments=comments, logged=utils.is_user_logged_in(),
-                           last_key=key)
+    return render_template("answer.html", answer=selected_answer, comments=comments,
+                           session_id=utils.get_user_id(session), logged=utils.is_user_logged_in(), last_key=key)
 
 
 @app.route('/question/<question_id>/add-vote')
@@ -183,7 +183,8 @@ def remove_question(question_id):
         data_manager.remove_image(answers_images)
         question_image = data_manager.delete_question_by_id(question_id)
         data_manager.remove_file(question_image)
-    flash("You can not remove the question.")
+    else:
+        flash("You can not remove the question.")
     return redirect("/")
 
 
@@ -235,6 +236,7 @@ def edit_answer(question_id, answer_id):
                     'view_number': 0,
                     'question_id': question_id,
                     'vote_number': 0,
+                    'accepted': the_answer['accepted'],
                     'message': request.form['message'],
                     'image': upload_file(request.files['image'])}
             data['message'] = data['message'].replace("\'", "''")
@@ -393,6 +395,7 @@ def remove_one_comment(comment_id):
         if not answer_id:
             return redirect(f"/question/{question_id}/comments")
         return redirect(f"/answer/{answer_id}")
+    flash("You can not remove the comment")
     return redirect('/')
 
 

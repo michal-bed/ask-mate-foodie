@@ -27,10 +27,11 @@
 		<div class="yellow">
 			<h2 class="yellow-header"> Answer </h2>
 			<div class="box">
+				{% if session_id == answer.user_id %}
 				<div class="edit-delete"><a class="sort" href="/question/{{answer.question_id}}/{{answer.id}}/edit">edit</a> |
 					<a href="/answer/{{answer.id}}/delete">delete</a></div>
 				<p class="date">published: {{ answer["submission_time"] }}</p>
-
+				{% endif %}
 				<div class="comment-block">
 					{% if answer['image'] %}
 					<img class="question-photo" src="{{ url_for('static', filename=answer['image']) }}"> {% endif %}
@@ -46,7 +47,10 @@
 							<img class="thumb" alt="thumbdown" src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-12-240.png') }}">
 						</a>
 				</div>
-				<p class="box-list-acceptance-buttons"> <a class="ask-call-button" href="/answer/{{answer.id}}/new-comment">Add your comment</a></p>
+				<p class="box-list-acceptance-buttons">
+					<a class="ask-call-button" href="/question/{{answer.question_id}}">Back</a>
+					<a class="ask-call-button" href="/answer/{{answer.id}}/new-comment">Add your comment</a>
+				</p>
 			    <div class="acceptance_button">
                     {% if answer.accepted %}
                         <img class="acceptance" alt="accepted" src="{{ url_for('static', filename='Pictures/accepted.png') }}">
@@ -82,8 +86,10 @@
 
 	{% for comment in comments %}
 	<div class="box" id="{{comment.id}}">
+		{% if session_id == comment.user_id %}
     <div class="edit-delete"><a class="sort" href="/answer/{{comment.question_id}}/{{comment.answer_id}}/{{comment.id}}/edit">edit</a> |
 					<a href="/comments/{{comment.id}}/delete">delete</a></div>
+		{% endif %}
 		<p class="date">Published: {{comment.submission_time }}</p>
 		<div class="comment-block">
 			<p class="list-text">{{comment.message}}</p>

@@ -26,10 +26,11 @@
 		<div class="yellow">
 			<h2 class="yellow-header"> Question </h2>
 			<div class="box">
+				{% if session_id == question.user_id %}
 				<div class="edit-delete"><a class="sort" href="/question/{{question.id}}/edit">edit</a> |
 					<a href="/question/{{question.id}}/delete">delete</a></div>
 				<p class="date">published: {{ question["submission_time"] }} | views: {{ question["view_number"] }} </p>
-
+				{% endif %}
 				<div class="comment-block">
 					{% if question['image'] %}
 					<img class="question-photo" src="{{ url_for('static', filename=question['image']) }}"> {% endif %}
@@ -87,8 +88,10 @@
 
 	{% for comment in comments %}
 	<div class="box" id="{{comment.id}}">
+		{% if session_id == comment.user_id %}
     <div class="edit-delete"><a class="sort" href="/question/{{comment.question_id}}/{{comment.id}}/edit-comment">edit</a> |
 					<a href="/comments/{{comment.id}}/delete">delete</a></div>
+		{% endif %}
 		<p class="date">Published: {{comment.submission_time }}</p>
 		<div class="comment-block">
 			<p class="list-text">{{comment.message}}</p>
