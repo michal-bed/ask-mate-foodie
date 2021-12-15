@@ -51,12 +51,12 @@ function getFilteredItems(items, filterValue) {
         let searchedPhrase = filterValue
         if (filterValue.match(/^!?Description:/i)) {
             console.log("Went into Description")
-            searchedPhrase.replace(/^(!?Description:)/i, "");
+            searchedPhrase = searchedPhrase.replace(/^(!?Description:)/i, "");
             console.log(`searchedPhrase: ${searchedPhrase}`)
             return (ifExclude ? items.filter(item => !item["Description"].match(new RegExp(searchedPhrase, 'i')))
                               : items.filter(item => item["Description"].match(new RegExp(searchedPhrase, 'i'))));
         }
-        searchedPhrase.replace(/^(!)/, '');
+        searchedPhrase = searchedPhrase.replace(/^(!)/, '');
         console.log(`searchedPhrase: ${searchedPhrase} | ${searchedPhrase.replace(/^(!)/, "")}`);
         return (ifExclude ? items.filter(item => !item["Title"].match(new RegExp(searchedPhrase, 'i')))
                           : items.filter(item => item["Title"].match(new RegExp(searchedPhrase, 'i'))));
