@@ -123,14 +123,39 @@ a.ask-call-button {
     text-align: center
 }
 
+.orange_box {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+    width: 85%;
+    background: linear-gradient(90deg, rgba(230, 155, 17, 1) 0%, rgba(242, 170, 18, 1) 50%, rgba(221, 146, 20, 1) 100%);
+    overflow: hidden;
+    padding: 40px 30px 70px 40px;
+    border: 0 solid;
+    border-radius: 8px;
+    box-shadow: 10px 5px 15px #525862;
+    text-align: center;
+    color: #FFFFFF;
+}
+
 .users_wrapper{
     width: 100%;
+    margin-top: 50px;
 }
 
 .mini_user_wrapper_box {
     float: left;
-    margin-right: 0.5em;
-    width: 16%;
+    margin-right: 0.2em;
+    width: 14%;
+}
+
+.mini_user_name_wrapper_box{
+    float: left;
+    margin-right: 0.2em;
+    width: 14%;
+    font-weight: bold;
+    color: #F0A142;
 }
 
 .search-box{
