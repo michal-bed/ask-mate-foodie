@@ -106,6 +106,7 @@
         <div class="acceptance_button">
                         {% if answer.accepted %}
                             <img class="acceptance" alt="accepted" src="{{ url_for('static', filename='Pictures/accepted.png') }}">
+                            <div class="undo-acceptance"><a  href="/answer/{{ answer.id }}/accept">Undo acceptance</a> |</div>
                         {% else %}
                             <a href="/answer/{{ answer.id }}/accept">
                                 <img class="acceptance" alt="awaiting_acceptance" src="{{ url_for('static', filename='Pictures/awaiting_acceptance.png') }}">

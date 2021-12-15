@@ -326,8 +326,10 @@ def accept_answer(answer_id):
     question_of_answer = data_manager.get_one_question(answer_to_accept['question_id'])[0]
     question_user_id = question_of_answer['user_id']
     session_user_id = utils.get_user_id(session)
+    state_of_acceptance = int(answer_to_accept['accepted'])
     if session_user_id == question_user_id:
-        answer_to_accept['accepted'] = '1'
+        state_of_acceptance += 1
+        answer_to_accept['accepted'] = str(state_of_acceptance % 2)
         data_manager.edit_answer(answer_id, answer_to_accept)
         return redirect(request.referrer)
     flash("You do not have permission to accept answers.")

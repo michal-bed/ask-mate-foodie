@@ -288,6 +288,15 @@ a.ask-call-button {
     color: #C76700
 }
 
+
+.undo-acceptance {
+    position: absolute;
+    top: 30px;
+    right: 117px;
+    color: #C76700
+}
+
+
 .box-list-acceptance-buttons {
     position: absolute;
     bottom: 30px;
