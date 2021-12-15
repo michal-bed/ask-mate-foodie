@@ -464,3 +464,22 @@ def get_one_user(cursor, user_name):
     WHERE user_name = %s"""
     cursor.execute(query, (user_name, ))
     return cursor.fetchone()
+
+
+@database_common.connection_handler
+def get_all_users(cursor):
+    query = """
+    SELECT 
+    ask_mate_user.user_name as user_name, 
+    ask_mate_user.registration_time as registration_time,
+    ask_mate_user.reputation as reputatuion,
+    count(distinct question.id) as questions,
+    count(distinct answer.id) as answers,
+    count(distinct comment.id) as comments
+    FROM ask_mate_user
+    LEFT JOIN question on ask_mate_user.id = question.user_id
+    LEFT JOIN answer on ask_mate_user.id = answer.user_id
+    LEFT JOIN comment on ask_mate_user.id = comment.user_id
+    GROUP BY user_name, registration_time, reputatuion;"""
+    cursor.execute(query)
+    return cursor.fetchall()

@@ -403,7 +403,8 @@ def logout():
 @app.route('/users', methods=["GET"])
 # @session_common.require_login
 def all_users():
-    return render_template('all_users.html')
+    users = data_manager.get_all_users()
+    return render_template('all_users.html', users=users)
 
 
 if __name__ == "__main__":
