@@ -352,3 +352,18 @@ a.ask-call-button {
 #answers {
     text-align: center
 }
+
+#bonusQuestionsTable th, td {
+  padding: 15px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+table#bonusQuestionsTable {
+  border-collapse: collapse;
+}
+
+#bonusQuestionsTable thead{
+  font-weight: bold;
+  cursor: default;
+}

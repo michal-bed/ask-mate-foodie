@@ -82,14 +82,42 @@ function getFilteredItems(items, filterValue) {
     // return items
 }
 
+let clickCounter = 0
+let bodyEl = document.getElementsByTagName('body')[0]
+let defaultFontColor = getComputedStyle(bodyEl).getPropertyValue('color')
+let defaultBackgroundColor = getComputedStyle(bodyEl).getPropertyValue('background-color')
 function toggleTheme() {
     console.log("toggle theme")
+    if (clickCounter % 2 === 0)
+    {
+        bodyEl.style.color = "white"
+        bodyEl.style.backgroundColor = "#1e1d1d"
+    }
+    else {
+        bodyEl.style.color = defaultFontColor
+        bodyEl.style.backgroundColor = defaultBackgroundColor
+    }
+    clickCounter++
 }
 
 function increaseFont() {
     console.log("increaseFont")
+    let bodyEl = document.getElementsByTagName('body')[0]
+    bodyEl.style.fontSize = 1.25 + "em"
 }
 
 function decreaseFont() {
     console.log("decreaseFont")
+    let bodyEl = document.getElementsByTagName('body')[0]
+    // let prevFontSize = parseFloat(getComputedStyle(bodyEl).getPropertyValue('font-size'))
+    // console.log((bodyEl.style.fontSize))
+    // console.log(prevFontSize)
+    // bodyEl.style.fontSize = prevFontSize * 0.75 + "px"
+    bodyEl.style.fontSize = 0.75 + "em"
+}
+
+function restoreFont() {
+    console.log("restoreFont")
+    let bodyEl = document.getElementsByTagName('body')[0]
+    bodyEl.style.fontSize = 1 + "em"
 }
