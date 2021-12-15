@@ -348,6 +348,17 @@ def get_tags_by_question_id(cursor, question_id):
 
 
 @database_common.connection_handler
+def get_tags_and_question_count(cursor):
+    query = """SELECT name, COUNT(question.id) AS count FROM 
+    ((tag INNER JOIN question_tag ON tag.id = question_tag.tag_id) 
+    INNER JOIN question ON question.id = question_tag.question_id)
+    GROUP BY tag.id
+    ORDER BY count DESC, tag.id"""
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
 def searching_questions_by_phrase(cursor, search_phrase):
     """serching in database question by phrase.
        If user try to hack database safe algoritm starts"""
@@ -382,9 +393,9 @@ def edit_answer(cursor, answer_id, data):
     query = """
         UPDATE answer
         SET submission_time = '{0}', vote_number = {1}, question_id = {2},  
-                                                    message = '{3}', image = '{4}'
-        WHERE id = {5}""".format(data['submission_time'], data['vote_number'], data['question_id'],
-                                 data['message'], data['image'], answer_id)
+                                                    message = '{3}', image = '{4}', accepted = '{5}'
+        WHERE id = {6}""".format(data['submission_time'], data['vote_number'], data['question_id'],
+                                 data['message'], data['image'], data['accepted'], answer_id)
     cursor.execute(query)
 
 
@@ -473,3 +484,22 @@ def get_user_data(cursor, user_id):
     WHERE id = %s"""
     cursor.execute(query, (int(user_id), ))
     return cursor.fetchone()
+
+
+@database_common.connection_handler
+def get_all_users(cursor):
+    query = """
+    SELECT 
+    ask_mate_user.user_name as user_name, 
+    ask_mate_user.registration_time as registration_time,
+    ask_mate_user.reputation as reputatuion,
+    count(distinct question.id) as questions,
+    count(distinct answer.id) as answers,
+    count(distinct comment.id) as comments
+    FROM ask_mate_user
+    LEFT JOIN question on ask_mate_user.id = question.user_id
+    LEFT JOIN answer on ask_mate_user.id = answer.user_id
+    LEFT JOIN comment on ask_mate_user.id = comment.user_id
+    GROUP BY user_name, registration_time, reputatuion;"""
+    cursor.execute(query)
+    return cursor.fetchall()

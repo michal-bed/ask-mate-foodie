@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, flash
 from data_manager import upload_file
 from werkzeug.security import generate_password_hash, check_password_hash
 import data_manager
@@ -152,6 +152,7 @@ def edit_question(question_id):
             data_manager.remove_image([the_question])
             data_manager.edit_question(question_id, data)
             return redirect(f'/question/{question_id}')
+    flash("You can not edit the question.")
     return redirect('/')
 
 
@@ -163,6 +164,7 @@ def remove_question(question_id):
         data_manager.remove_image(answers_images)
         question_image = data_manager.delete_question_by_id(question_id)
         data_manager.remove_file(question_image)
+    flash("You can not remove the question.")
     return redirect("/")
 
 
@@ -176,7 +178,8 @@ def add_answer(question_id):
             "vote_number": 0,
             "message": request.form['message'],
             "image": upload_file(request.files['image']),
-            "user_id": utils.get_user_id(session)
+            "user_id": utils.get_user_id(session),
+            "accepted": 0
         }
         data['message'] = utils.replacing_special_keys(data['message'])
         data_manager.add_new_answer(data)
@@ -193,6 +196,7 @@ def remove_answer(answer_id):
         answer_data = data_manager.delete_answer(answer_id)
         data_manager.remove_file(answer_data['image'])
         return redirect(f"/question/{answer_data['question_id']}")
+    flash("You can not remove the answer.")
     return redirect('/')
 
 
@@ -213,6 +217,7 @@ def edit_answer(question_id, answer_id):
             data['message'] = data['message'].replace("\'", "''")
             data_manager.edit_answer(answer_id, data)
             return redirect(f'/question/{question_id}#{answer_id}')
+    flash("You can not edit the answer.")
     return redirect('/')
 
 
@@ -231,6 +236,7 @@ def edit_comment_to_question(question_id, comment_id):
 
             data_manager.edit_comment(comment_id, data)
             return redirect(f'/question/{question_id}/comments')
+    flash("You can not edit the comment.")
     return redirect('/')
 
 
@@ -249,6 +255,7 @@ def edit_comment_to_answer(answer_id, question_id, comment_id):
 
             data_manager.edit_comment(comment_id, data)
             return redirect(f'/answer/{answer_id}#{comment_id}')
+    flash("You can not edit the comment.")
     return redirect('/')
 
 
@@ -258,6 +265,12 @@ def add_tags_to_question(question_id):
         return utils.add_tag_if_get_method(question_id)
     elif request.method == "POST":
         return utils.add_tag_if_post_method(question_id)
+
+
+@app.route('/tags')
+def display_all_tags():
+    all_tags = data_manager.get_tags_and_question_count()
+    return render_template('tags.html', all_tags=all_tags)
 
 
 @app.route('/question/<question_id>/tag/<tag_id>/delete')
@@ -307,6 +320,22 @@ def add_comment_to_answer(answer_id):
         return redirect(f'/answer/{answer_id}')
 
 
+@app.route('/answer/<answer_id>/accept', methods=["GET", "POST"])
+def accept_answer(answer_id):
+    answer_to_accept = data_manager.get_one_answer(answer_id)[0]
+    question_of_answer = data_manager.get_one_question(answer_to_accept['question_id'])[0]
+    question_user_id = question_of_answer['user_id']
+    session_user_id = utils.get_user_id(session)
+    state_of_acceptance = int(answer_to_accept['accepted'])
+    if session_user_id == question_user_id:
+        state_of_acceptance += 1
+        answer_to_accept['accepted'] = str(state_of_acceptance % 2)
+        data_manager.edit_answer(answer_id, answer_to_accept)
+        return redirect(request.referrer)
+    flash("You do not have permission to accept answers.")
+    return redirect('/')
+
+
 @app.route('/search')
 def search_question():
     key = request.args.get('order_by', "vote_number")
@@ -335,6 +364,9 @@ def remove_one_comment(comment_id):
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
+    if 'login' in session:
+        flash("You can not login if you are logged in now.")
+        return redirect('/')
     if request.method == 'POST':
         user_name = request.form['user_name']
         password = request.form['password']
@@ -376,6 +408,7 @@ def register():
 
 
 @app.route('/logout', methods=["GET"])
+@session_common.require_login
 def logout():
     session.pop('login')
     session.pop('user_name')
@@ -419,6 +452,13 @@ def get_user_comments():
     return render_template('user_page.html', questions=4, answers=3, comments=7,
                            user_data=user_data,
                            url="/user/comments")
+
+
+@app.route('/users', methods=["GET"])
+# @session_common.require_login
+def all_users():
+    users = data_manager.get_all_users()
+    return render_template('all_users.html', users=users)
 
 
 if __name__ == "__main__":

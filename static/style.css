@@ -140,8 +140,8 @@ a.ask-user-button {
     border-radius: 8px;
     box-shadow: 10px 5px 15px #525862;
     text-align: center
-
 }
+
 .background-box {
     position: relative;
     margin-left: auto;
@@ -162,6 +162,7 @@ a.ask-user-button {
     text-align: center
 
 }
+
 .search-box{
     background: linear-gradient(90deg, rgba(230, 155, 17, 1) 0%, rgba(242, 170, 18, 1) 50%, rgba(221, 146, 20, 1) 100%);
     padding: 10px 10px 20px 10px;
@@ -172,6 +173,7 @@ a.ask-user-button {
     box-shadow: 10px 5px 15px #525862;
 
 }
+
 .user-box {
     margin-left: auto;
     margin-right: auto;
@@ -189,6 +191,7 @@ a.ask-user-button {
     text-align: center
 
 }
+
 .container {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -346,6 +349,26 @@ a.ask-user-button {
 }
 
 
+.undo-acceptance {
+    position: absolute;
+    top: 30px;
+    right: 117px;
+    color: #C76700
+}
+
+
+.box-list-acceptance-buttons {
+    position: absolute;
+    bottom: 30px;
+    right: 75px
+}
+
+.acceptance {
+    position: absolute;
+    width: 52px;
+    bottom: 45px;
+    right: 15px;
+}
 /**********add answer page*********/
 
 .yellow {
