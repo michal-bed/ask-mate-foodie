@@ -17,5 +17,21 @@
 
 </div>
 </header>
-
+{% for user in users %}
+<div class="box" id="{{user.id}}">
+	 <p>User name:</p>
+	 <p>{{user.user_name}}</p>
+	 <p>Registration time:</p>
+	 <p>{{user.registration_time}}</p>
+	 <p>Reputation:</p>
+	 <p>{{user.reputation}}</p>
+	 <p>Number of questions:</p>
+	 <p>{{user.questions}}</p>
+	 <p>Number of answers:</p>
+	 <p>{{user.answers}}</p>
+	 <p>Number of comments:</p>
+	 <p>{{user.comments}}</p>
+	 <a href="/user/{{user.id}}">Details</a>
+</div>
+{% endfor %}
 {% endblock %}
