@@ -26,8 +26,10 @@
 		<div class="yellow">
 			<h2 class="yellow-header"> Question </h2>
 			<div class="box">
+				{% if session_id == question.user_id %}
 				<div class="edit-delete"><a class="sort" href="/question/{{question.id}}/edit">edit</a> |
 					<a href="/question/{{question.id}}/delete">delete</a></div>
+				{% endif %}
 				<p class="date">published: {{ question["submission_time"] }} | views: {{ question["view_number"] }} </p>
 
 				<div class="comment-block">
@@ -90,8 +92,10 @@
 
 	{% for answer in answers %}
 	<div class="box" id="{{answer.id}}">
+		{% if session_id == answer.user_id %}
     <div class="edit-delete"><a class="sort" href="/question/{{question.id}}/{{answer.id}}/edit">edit</a> |
 					<a href="/answer/{{answer.id}}/delete">delete</a></div>
+		{% endif %}
 		<p class="date">Published: {{answer.submission_time }}</p>
 		<div class="comment-block">
 			{% if answer.image %}
