@@ -9,7 +9,7 @@
     <img id="logotopbar" alt="Foodie Helpdesk Logo" src="{{ url_for('static', filename='Pictures/chefer-1.png') }}">
 			</a>
 
-			<<a  href="{{ url_for('list_main_page') }}">Home</a>
+			<a  href="{{ url_for('list_main_page') }}">Home</a>
             <a  href="{{ url_for('display_all_tags') }}">All tags</a>
 			<a  href="/login">Login</a>
 			<a  href="/logout">Logout</a>
@@ -17,21 +17,27 @@
 
 </div>
 </header>
-{% for user in users %}
-<div class="box" id="{{user.id}}">
-	 <p>User name:</p>
-	 <p>{{user.user_name}}</p>
-	 <p>Registration time:</p>
-	 <p>{{user.registration_time}}</p>
-	 <p>Reputation:</p>
-	 <p>{{user.reputation}}</p>
-	 <p>Number of questions:</p>
-	 <p>{{user.questions}}</p>
-	 <p>Number of answers:</p>
-	 <p>{{user.answers}}</p>
-	 <p>Number of comments:</p>
-	 <p>{{user.comments}}</p>
-	 <a href="/user/{{user.id}}">Details</a>
+<div class="users_wrapper">
+<div class="box">
+	<div class="mini_user_wrapper_box">User name</div>
+	<div class="mini_user_wrapper_box">Registration time</div>
+	<div class="mini_user_wrapper_box">Reputation</div>
+	<div class="mini_user_wrapper_box">Number of questions</div>
+	<div class="mini_user_wrapper_box">Number of answers</div>
+	<div class="mini_user_wrapper_box">Number of comments</div>
 </div>
-{% endfor %}
+	{% for user in users %}
+<div class="box">
+	<div class="mini_user_wrapper_box">{{user.user_name}}</div>
+	<div class="mini_user_wrapper_box">{{user.registration_time}}</div>
+	<div class="mini_user_wrapper_box">{{user.reputation}}</div>
+	<div class="mini_user_wrapper_box">{{user.questions}}</div>
+	<div class="mini_user_wrapper_box">{{user.answers}}</div>
+	<div class="mini_user_wrapper_box">{{user.comments}}</div>
+</div>
+	{% endfor %}
+</div>
+
+</div>
+
 {% endblock %}

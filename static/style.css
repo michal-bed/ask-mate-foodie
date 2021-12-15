@@ -122,6 +122,17 @@ a.ask-call-button {
     box-shadow: 10px 5px 15px #525862;
     text-align: center
 }
+
+.users_wrapper{
+    width: 100%;
+}
+
+.mini_user_wrapper_box {
+    float: left;
+    margin-right: 0.5em;
+    width: 16%;
+}
+
 .search-box{
     background: linear-gradient(90deg, rgba(230, 155, 17, 1) 0%, rgba(242, 170, 18, 1) 50%, rgba(221, 146, 20, 1) 100%);
     padding: 10px 10px 20px 10px;
