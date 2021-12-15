@@ -63,7 +63,6 @@ def question(question_id):
 
 
 @app.route('/bonus-questions')
-@session_common.require_login
 def bonus_question():
     """Display table with bonus questions"""
     return render_template('bonus_questions.html', questions=bonus_questions.SAMPLE_QUESTIONS)
