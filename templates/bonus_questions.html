@@ -3,7 +3,7 @@
 
 
  {% block head %}
-     <title>Foodie Helpdesk</title>
+     <title>Foodie Helpdesk - Bonus questions</title>
         <script type="text/javascript" src="{{ url_for('static', filename='js/bonusQuestions.js') }}" defer></script>
         <script type="text/javascript" src="{{ url_for('static', filename='js/doNotModifyThisFile.js') }}" defer></script>
 {% endblock %}
@@ -13,12 +13,13 @@
         <button id="theme-button">Change Theme to Dark</button>
         <button id="increase-font-button">Increase page font</button>
         <button id="decrease-font-button">Decrease page font</button>
+        <button id="restore-font-button">Restore default page font</button>
         <input
                 data-table-body="doNotModifyThisId_QuestionsTableBody"
                 style="width: 500px" id="doNotModifyThisId_QuestionsFilter"
                 type="text"
                 placeholder="filter questions by keywords">
-        <table>
+        <table id="bonusQuestionsTable">
             <thead id="doNotModifyThisId_QuestionsTableHeader">
                 <tr>
                     <td>Title</td>

@@ -8,6 +8,7 @@ import encrypter
 import datetime
 import session_common
 import utils
+import bonus_questions
 
 
 UPLOAD_FOLDER = './static/upload'
@@ -28,11 +29,13 @@ def handle_permanent_session():
 @app.route("/")
 def list_main_page():
     """Display first five questions on the page."""
+    is_logged = utils.is_user_logged_in()
     key = "submission_time"
     order = "desc"
     questions = data_manager.get_all_questions(key, order, 5)
     tags = utils.collect_all_tags_for_questions(questions)
-    return render_template('list.html', questions_data=questions, last_key=key, last_order=order, tags=tags, url='/', limit="true")
+    return render_template('list.html', questions_data=questions, last_key=key, last_order=order, tags=tags, url='/',
+                           limit="true", logged= is_logged)
 
 
 @app.route('/list')
@@ -57,6 +60,12 @@ def question(question_id):
     answers = data_manager.get_all_answers_for_question(question_id, key, order)
     tags = utils.collect_all_tags_for_one_question(selected_question)
     return render_template("question.html", question=selected_question, answers=answers, last_key=key, tags=tags)
+
+
+@app.route('/bonus-questions')
+def bonus_question():
+    """Display table with bonus questions"""
+    return render_template('bonus_questions.html', questions=bonus_questions.SAMPLE_QUESTIONS)
 
 
 @app.route('/question/<question_id>/comments')
@@ -364,7 +373,7 @@ def remove_one_comment(comment_id):
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
-    if 'login' in session:
+    if utils.is_user_logged_in():
         flash("You can not login if you are logged in now.")
         return redirect('/')
     if request.method == 'POST':
