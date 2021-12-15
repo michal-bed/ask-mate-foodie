@@ -28,11 +28,13 @@ def handle_permanent_session():
 @app.route("/")
 def list_main_page():
     """Display first five questions on the page."""
+    is_logged = utils.is_user_logged_in()
     key = "submission_time"
     order = "desc"
     questions = data_manager.get_all_questions(key, order, 5)
     tags = utils.collect_all_tags_for_questions(questions)
-    return render_template('list.html', questions_data=questions, last_key=key, last_order=order, tags=tags, url='/', limit="true")
+    return render_template('list.html', questions_data=questions, last_key=key, last_order=order, tags=tags, url='/',
+                           limit="true", logged= is_logged)
 
 
 @app.route('/list')
@@ -364,7 +366,7 @@ def remove_one_comment(comment_id):
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
-    if 'login' in session:
+    if utils.is_user_logged_in():
         flash("You can not login if you are logged in now.")
         return redirect('/')
     if request.method == 'POST':
