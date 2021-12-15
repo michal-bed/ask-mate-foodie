@@ -393,9 +393,9 @@ def edit_answer(cursor, answer_id, data):
     query = """
         UPDATE answer
         SET submission_time = '{0}', vote_number = {1}, question_id = {2},  
-                                                    message = '{3}', image = '{4}'
-        WHERE id = {5}""".format(data['submission_time'], data['vote_number'], data['question_id'],
-                                 data['message'], data['image'], answer_id)
+                                                    message = '{3}', image = '{4}', accepted = '{5}'
+        WHERE id = {6}""".format(data['submission_time'], data['vote_number'], data['question_id'],
+                                 data['message'], data['image'], data['accepted'], answer_id)
     cursor.execute(query)
 
 

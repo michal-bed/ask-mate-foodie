@@ -178,7 +178,8 @@ def add_answer(question_id):
             "vote_number": 0,
             "message": request.form['message'],
             "image": upload_file(request.files['image']),
-            "user_id": utils.get_user_id(session)
+            "user_id": utils.get_user_id(session),
+            "accepted": 0
         }
         data['message'] = utils.replacing_special_keys(data['message'])
         data_manager.add_new_answer(data)
@@ -317,6 +318,22 @@ def add_comment_to_answer(answer_id):
         }
         data_manager.add_comment(data)
         return redirect(f'/answer/{answer_id}')
+
+
+@app.route('/answer/<answer_id>/accept', methods=["GET", "POST"])
+def accept_answer(answer_id):
+    answer_to_accept = data_manager.get_one_answer(answer_id)[0]
+    question_of_answer = data_manager.get_one_question(answer_to_accept['question_id'])[0]
+    question_user_id = question_of_answer['user_id']
+    session_user_id = utils.get_user_id(session)
+    state_of_acceptance = int(answer_to_accept['accepted'])
+    if session_user_id == question_user_id:
+        state_of_acceptance += 1
+        answer_to_accept['accepted'] = str(state_of_acceptance % 2)
+        data_manager.edit_answer(answer_id, answer_to_accept)
+        return redirect(request.referrer)
+    flash("You do not have permission to accept answers.")
+    return redirect('/')
 
 
 @app.route('/search')
