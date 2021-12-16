@@ -82,7 +82,7 @@ def question_with_comments(question_id):
     comments = data_manager.get_all_comments_for_question(question_id, key, order)
     tags = utils.collect_all_tags_for_one_question(selected_question)
     return render_template("question_with_comments.html", question=selected_question, tags=tags, comments=comments,
-                           logged=utils.is_user_logged_in(), last_key=key, session_id=utils.get_user_id(session),
+                           logged=utils.is_user_logged_in(), last_key=key, last_order=order, session_id=utils.get_user_id(session),
                            user_id=utils.get_user_id(session))
 
 
@@ -397,7 +397,7 @@ def search_question():
     utils.mark_phrase(questions, search_phrase)
     tags = utils.collect_all_tags_for_questions(questions)
     return render_template('list.html', questions_data=questions, tags=tags, last_key=key,
-                           user_id=utils.get_user_id(session),
+                           user_id=utils.get_user_id(session), earch_phrase=search_phrase,
                            last_order=order, logged=utils.is_user_logged_in(), url='/search')
 
 
