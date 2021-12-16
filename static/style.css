@@ -310,6 +310,10 @@ a.ask-user-button {
     margin-bottom: 5em;
 }
 
+.author{
+    font-weight: bold;
+}
+
 /************LIST display****************/
 
 .date {

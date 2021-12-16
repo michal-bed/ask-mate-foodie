@@ -114,7 +114,7 @@
     <div class="edit-delete"><a class="sort" href="/question/{{comment.question_id}}/{{comment.id}}/edit-comment">edit</a> |
 					<a href="/comments/{{comment.id}}/delete">delete</a></div>
 		{% endif %}
-		<p class="date">Published: {{comment.submission_time }}</p>
+		<p class="date">Author: <a class="author" href="/user/{{ user_id }}">{{ question.user_name }} </a>| Published: {{comment.submission_time }}</p>
 		<div class="comment-block">
 			<p class="list-text">{{comment.message}}</p>
 		</div>
