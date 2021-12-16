@@ -112,8 +112,13 @@
 			<p class="list-text">{{ question["message"] | safe }}</p>
 
 		</div>
+
         {% set upvote_link = "/question/" ~ question.id ~ "/add-vote?order_by=" ~ last_key ~ "&order_direction=" ~ last_order  %}
         {% set downvote_link ="/question/" ~ question.id ~ "/remove-vote?order_by=" ~ last_key ~ "&order_direction=" ~ last_order %}
+        {% if search_phrase is defined %}
+            {% set upvote_link = upvote_link ~ "&search_phrase=" ~ search_phrase %}
+            {% set downvote_link = downvote_link ~ "&search_phrase=" ~ search_phrase %}
+        {% endif %}
         {% if limit is defined and limit == "true" %}
             {% set upvote_link = upvote_link ~ "&limit=true#" ~ question.id %}
             {% set downvote_link = downvote_link ~ "&limit=true#" ~ question.id %}

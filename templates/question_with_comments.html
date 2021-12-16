@@ -64,10 +64,10 @@
 				</div>
 				<div class="box-voting">
 					<p class="date"> Number of votes: {{ question["vote_number"] }} Vote:
-						<a href="/question/{{question.id}}/add-vote?page=question">
+						<a href="/question/{{question.id}}/add-vote?comments=true&order_by={{ last_key }}&order_direction={{ last_order }}">
 							<img class="thumb" alt="thumbup" src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-10-240.png') }}">
 						</a>
-						<a href="/question/{{question.id}}/remove-vote?page=question">
+						<a href="/question/{{question.id}}/remove-vote?comments=true&order_by={{ last_key }}&order_direction={{ last_order }}">
 							<img class="thumb" alt="thumbdown" src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-12-240.png') }}">
 						</a>
 
@@ -97,12 +97,12 @@
 	</div>
 	<div class="question-list">
 		<p class="sort">Sort:
-			<a href="/answer/{{question.id}}?order_by=submission_time&order_direction=desc">submission time</a> |
-			<a href="/answer/{{question.id}}?order_by=message&order_direction=desc">message</a>
+			<a href="/question/{{question.id}}/comments?order_by=submission_time&order_direction=desc">submission time</a> |
+			<a href="/question/{{question.id}}/comments?order_by=message&order_direction=desc">message</a>
 		</p>
 		<p class="sort">Sort:
-			<a href="/answer/{{question.id}}?order_by={{last_key}}&order_direction=desc">&#8593</a> |
-			<a href="/answer/{{question.id}}?order_by={{last_key}}&order_direction=asc">&#8595</a>
+			<a href="/question/{{question.id}}/comments?order_by={{last_key}}&order_direction=desc">&#8593</a> |
+			<a href="/question/{{question.id}}/comments?order_by={{last_key}}&order_direction=asc">&#8595</a>
 
 		</p>
 	</div>
