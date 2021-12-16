@@ -36,7 +36,7 @@ def get_one_question(cursor, id):
         FROM question
         WHERE id = {0}""".format(id)
     cursor.execute(query)
-    return cursor.fetchall()
+    return cursor.fetchone()
 
 
 @database_common.connection_handler
@@ -46,7 +46,7 @@ def get_one_answer(cursor, id):
         FROM answer
         WHERE id = {0}""".format(id)
     cursor.execute(query)
-    return cursor.fetchall()
+    return cursor.fetchone()
 
 
 @database_common.connection_handler
@@ -120,6 +120,25 @@ def remove_vote(cursor, type, id):
         UPDATE {0}
         SET vote_number = vote_number - 1
         WHERE id = {1} """.format(type, id)
+    cursor.execute(query)
+
+
+
+@database_common.connection_handler
+def increase_reputation(cursor, increase_amount, id):
+    query = """
+        UPDATE ask_mate_user
+        SET reputation = ask_mate_user.reputation + {0}
+        WHERE id = {1} """.format(increase_amount, id)
+    cursor.execute(query)
+
+
+@database_common.connection_handler
+def decrease_reputation(cursor, increase_amount, id):
+    query = """
+        UPDATE ask_mate_user
+        SET reputation = ask_mate_user.reputation - {0}
+        WHERE id = {1} """.format(increase_amount, id)
     cursor.execute(query)
 
 
