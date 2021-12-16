@@ -200,7 +200,6 @@ a.ask-user-button {
     width: 14%;
     font-weight: bold;
     color: #F0A142;
->>>>>>> development
 }
 
 .search-box{
@@ -221,40 +220,44 @@ a.ask-user-button {
 
 
 /*****************TOPBAR**********************/
-#logo-box{
-    grid-column: span 1;
-
-}
-#header{
-    height: 3rem;
-}
-#logotopbar {
-    height: 3rem;
-    float: left;
-}
-
-.topnav {
+.menu {
     display: grid;
-    grid-template-columns:  9em repeat(9, 1fr);
+    grid-template-columns: 150px repeat(auto-fit, minmax(150px, 1fr));
+    align-items: center;
+    align-content: center;
+    justify-content: left;
+    grid-gap: 1.5em;
+    padding: 0 30px;
     background: #FFFFFF;
-    overflow: hidden;
-    height: 68px
+}
+.menu ul{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 5em));
+    padding: 0;
+    margin: 0;
+    justify-items: center;
+    list-style: none;
 }
 
-.topnav a {
+.menu__logo
+{
+    height: 3em;
+}
+.menu a {
+    display: block;
     color: #525862;
-    text-align: center;
+    text-align: left;
     padding: 16px;
     text-decoration: none;
-    font-size: 19px
+    font-size: 14px
 }
 
-.topnav a:hover {
+.menu a:hover {
     background-color: #FFFFFF;
-    color: #525862
+    color: #efae34
 }
 
-.topnav a.active {
+.menu a.active {
     background-color: #ECA111;
     color: #FFFFFF
 }

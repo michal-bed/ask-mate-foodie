@@ -1,26 +1,47 @@
+
 {% extends 'base.html' %}
-{% block head %}<title>Foodie Helpdesk</title>{% endblock %}
+{% block head %}<title>Foodie Helpdesk</title>
+{% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">
+        <script type="text/javascript">
+			alert('{{ message }}');
+		</script>
+    </div>
+{% endfor %}
+{% endblock %}
 
 {% block body %}
-<header class="header">
-<div class="topnav">
-	<! – HEADER –>
-    <a id="logo-box" href="{{ url_for('list_main_page') }}">
-    <img id="logotopbar" alt="Foodie Helpdesk Logo" src="{{ url_for('static', filename='Pictures/chefer-1.png') }}">
-			</a>
 
-	<a class="active" href="{{ url_for('list_main_page') }}">Home</a>
-	<a  href="{{ url_for('display_all_tags') }}">All tags</a>
-	{% if logged %}
-	<a  href="/logout">Logout</a>
-	{% else %}
-	<a  href="/login">Login</a>
-	<a  href="/register">Register</a>
-	{% endif %}
-	<a  href="/users">Users</a>
 
-</div>
-</header>
+<header>
+<!-- Main Top Menu -->
+    <nav>
+        <div class="menu">
+                <a id="logo-box" href="{{ url_for('list_main_page') }}">
+                <img class="menu__logo" alt="Foodie Helpdesk Logo" src="{{ url_for('static', filename='Pictures/chefer-1.png') }}">
+                        </a>
+
+            {% if logged %}
+                <ul>
+                    <li><a  href="{{ url_for('list_main_page') }}">Home</a></li>
+                    <li><a  href="{{ url_for('display_all_tags') }}">All tags</a></li>
+                    <li><a  href="/users">Users</a></li>
+                    <li><a  href="/logout">Logout</a></li>
+                </ul>
+
+            {% else %}
+                <ul>
+                    <li><a  href="{{ url_for('list_main_page') }}">Home</a></li>
+                    <li><a  href="{{ url_for('display_all_tags') }}">All tags</a></li>
+                    <li><a  href="/users">Users</a></li>
+                    <li><a  href="/login">Login</a></li>
+                    <li><a  href="/register">Register</a></li>
+                </ul>
+            {% endif %}
+
+        </div>
+    </nav>
+  </header>
 	<div class="wrapp-around">
 		<div class="yellow">
 			<h2 class="yellow-header">Comment to {{header}} </h2>
