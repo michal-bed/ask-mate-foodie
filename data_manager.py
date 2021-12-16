@@ -456,6 +456,9 @@ def create_user(cursor, user_data):
                            user_data['email'], user_data['reputation'], user_data['account_type']))
 
 
+########## One user data ##########
+
+
 @database_common.connection_handler
 def get_one_user(cursor, user_name):
     query = """
@@ -467,16 +470,6 @@ def get_one_user(cursor, user_name):
 
 
 @database_common.connection_handler
-def get_user_questions(cursor, user_id):
-    query = """
-    SELECT *
-    FROM question
-    WHERE user_id = %s"""
-    cursor.execute(query, (int(user_id), ))
-    return cursor.fetchall()
-
-
-@database_common.connection_handler
 def get_user_data(cursor, user_id):
     query = """
     SELECT user_name, registration_time, reputation
@@ -484,6 +477,72 @@ def get_user_data(cursor, user_id):
     WHERE id = %s"""
     cursor.execute(query, (int(user_id), ))
     return cursor.fetchone()
+
+
+@database_common.connection_handler
+def get_user_questions(cursor, user_id):
+    query = """
+    SELECT *
+    FROM question
+    WHERE user_id = %s"""
+    cursor.execute(query, (user_id, ))
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_count_user_questions(cursor, user_id):
+    query = """
+    SELECT COUNT(title) AS question
+    FROM question
+    WHERE user_id = %s
+    GROUP BY user_id"""
+    cursor.execute(query, (user_id, ))
+    return cursor.fetchone()
+
+
+@database_common.connection_handler
+def get_user_answers(cursor, user_id):
+    query = """
+    SELECT *
+    FROM answer
+    WHERE user_id = %s"""
+    cursor.execute(query, (user_id, ))
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_count_user_answers(cursor, user_id):
+    query = """
+    SELECT COUNT(message) AS answer
+    FROM answer
+    WHERE user_id = %s
+    GROUP BY user_id"""
+    cursor.execute(query, (user_id, ))
+    return cursor.fetchone()
+
+
+@database_common.connection_handler
+def get_user_comment(cursor, user_id):
+    query = """
+    SELECT *
+    FROM comment
+    WHERE user_id = %s"""
+    cursor.execute(query, (user_id, ))
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_count_user_comment(cursor, user_id):
+    query = """
+    SELECT COUNT(message) AS comment
+    FROM comment
+    WHERE user_id = %s
+    GROUP BY user_id"""
+    cursor.execute(query, (user_id, ))
+    return cursor.fetchone()
+
+
+##########All users data##########
 
 
 @database_common.connection_handler

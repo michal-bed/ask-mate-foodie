@@ -106,22 +106,21 @@ a.ask-call-button {
 }
 
 .ask-user-button {
-    background-color: #ED8B16;
+    background-color: #ffffff;
     background-image: -moz-linear-gradient(center top, #EF962B 0%, #ED8B16 100%);
-    border: 0 none;
+    border: 1.0em;
     border-radius: 3px;
-    box-shadow: 0 3px 0 rgba(254, 181, 94, 0.5) inset;
-    color: #FFFFFF;
+    box-shadow: 10px 5px 15px #525862;
     text-decoration: none;
     display: inline-block;
-    font-size: 1.5em;
+    font-size: 1.0em;
     padding: 1em 1.8em;
     text-align: center;
     text-shadow: 0 -1px 0 rgba(222, 122, 0, 0.8)
 }
 
 a.ask-user-button {
-    color: #ffffff;
+    color: #ED8B16;
 }
 
 
@@ -171,24 +170,6 @@ a.ask-user-button {
     text-align: center;
     color: #FFFFFF;
     box-shadow: 10px 5px 15px #525862;
-
-}
-
-.user-box {
-    margin-left: auto;
-    margin-right: auto;
-    top: 300px;
-    z-index: 3;
-    width: 30%;
-    background: none repeat scroll 0 0 #FFFFFF;
-    font-size: 1.3em;
-    font-weight: bold;
-    overflow: hidden;
-    padding: 30px 30px 70px 30px;
-    border: 1px solid;
-    border-radius: 8px;
-    box-shadow: 10px 5px 15px #525862;
-    text-align: center
 
 }
 

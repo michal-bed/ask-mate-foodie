@@ -48,7 +48,7 @@ def list_main_page_with_all_questions():
 @app.route('/question/<question_id>')
 def question(question_id):
     """Display one question with answers."""
-    chant_views = request.args.get("change_views", True)
+    change_views = request.args.get("change_views", True)
     if change_views != "false":
         data_manager.add_views_to_question(question_id)
     selected_question = data_manager.get_one_question(question_id)[0]
@@ -417,11 +417,18 @@ def logout():
     return render_template('login.html', message='You are logged out')
 
 
+########## user page functions ##########
+
+
 @app.route("/user/")
 def user_page():
     user_id = utils.decrypt_user_id(session.get('user_id'))
     user_data = data_manager.get_user_data(user_id)
-    return render_template('user_page.html', questions=4, answers=3, comments=7,
+    questions_counted = data_manager.get_count_user_questions(user_id)
+    answers_counted = data_manager.get_count_user_answers(user_id)
+    comments_counted = data_manager.get_count_user_comment(user_id)
+    return render_template('user_page.html', questions=questions_counted,
+                           answers=answers_counted, comments=comments_counted,
                            user_data=user_data)
 
 
@@ -429,9 +436,13 @@ def user_page():
 def get_user_questions():
     user_id = utils.decrypt_user_id(session.get('user_id'))
     user_data = data_manager.get_user_data(user_id)
+    questions_counted = data_manager.get_count_user_questions(user_id)
+    answers_counted = data_manager.get_count_user_answers(user_id)
+    comments_counted = data_manager.get_count_user_comment(user_id)
     user_questions = data_manager.get_user_questions(user_id)
     tags = utils.collect_all_tags_for_questions(user_questions)
-    return render_template('user_page.html', questions=4, answers=3, comments=7,
+    return render_template('user_page.html', questions=questions_counted,
+                           answers=answers_counted, comments=comments_counted,
                            user_data=user_data, user_questions=user_questions,
                            tags=tags, url="/user/questions")
 
@@ -440,8 +451,13 @@ def get_user_questions():
 def get_user_answers():
     user_id = utils.decrypt_user_id(session.get('user_id'))
     user_data = data_manager.get_user_data(user_id)
-    return render_template('user_page.html', questions=4, answers=3, comments=7,
-                           user_data=user_data,
+    questions_counted = data_manager.get_count_user_questions(user_id)
+    answers_counted = data_manager.get_count_user_answers(user_id)
+    comments_counted = data_manager.get_count_user_comment(user_id)
+    user_answers = data_manager.get_user_answers(user_id)
+    return render_template('user_page.html', questions=questions_counted,
+                           answers=answers_counted, comments=comments_counted,
+                           user_data=user_data, user_answers=user_answers,
                            url="/user/answers")
 
 
@@ -449,8 +465,13 @@ def get_user_answers():
 def get_user_comments():
     user_id = utils.decrypt_user_id(session.get('user_id'))
     user_data = data_manager.get_user_data(user_id)
-    return render_template('user_page.html', questions=4, answers=3, comments=7,
-                           user_data=user_data,
+    questions_counted = data_manager.get_count_user_questions(user_id)
+    answers_counted = data_manager.get_count_user_answers(user_id)
+    comments_counted = data_manager.get_count_user_comment(user_id)
+    user_comments = data_manager.get_user_comment(user_id)
+    return render_template('user_page.html', questions=questions_counted,
+                           answers=answers_counted, comments=comments_counted,
+                           user_data=user_data, user_comments=user_comments,
                            url="/user/comments")
 
 
