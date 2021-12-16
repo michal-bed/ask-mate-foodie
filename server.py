@@ -399,7 +399,7 @@ def search_question():
     utils.mark_phrase(questions, search_phrase)
     tags = utils.collect_all_tags_for_questions(questions)
     return render_template('list.html', questions_data=questions, tags=tags, last_key=key,
-                           user_id=utils.get_user_id(session), earch_phrase=search_phrase,
+                           user_id=utils.get_user_id(session), search_phrase=search_phrase,
                            last_order=order, logged=utils.is_user_logged_in(), url='/search')
 
 

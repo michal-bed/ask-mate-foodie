@@ -118,7 +118,7 @@
 		<div class="comment-block">
 			<p class="list-text">{{comment.message}}</p>
 		</div>
-		<p class="date">Edited {{comment.edited_count}} times</p>
+		<p class="date">Edited {{comment.edited_count}} {{ "time" if comment.edited_count == 1 else "times" }}</p>
 	</div>
 		{% endfor %}
 

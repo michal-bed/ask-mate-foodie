@@ -75,7 +75,7 @@
 			<div class="box">
                 {% if answer is defined %}
                 <form method="post" action="{{ url_for('edit_answer',question_id=question["id"],  answer_id=answer["id"]) }}" enctype="multipart/form-data">
-                    <h4>Your answer</h4>
+                    <h2>Edit answer</h2>
 					{% if answer is defined %}
                     <textarea name="message" cols="30" rows="5" class="html-text-box">{{ answer["message"] }}</textarea><br>
                     {% else %}
@@ -89,7 +89,7 @@
 
                 {% else %}
 				<form method="post" action="{{ url_for('add_answer', question_id=question["id"]) }}" enctype="multipart/form-data">
-					<h2>Add/Edit Answer</h2>
+					<h2>Add answer</h2>
 					<textarea name="message" cols="30" rows="5" class="html-text-box" placeholder="Submit your answer"></textarea><br>
 					<label for="answer_image">Upload photo:</label>
 

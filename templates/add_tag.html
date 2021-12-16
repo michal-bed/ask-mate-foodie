@@ -43,8 +43,17 @@
         </div>
     </nav>
   </header>
+
+
     {% if redirect_to is not defined %}
         {% set post_link = "/question/" ~ question_id ~ "/new-tag"  %}
+        {% if search_phrase is defined %}
+            {% set post_link = post_link ~ "?search_phrase=" ~ search_phrase ~ "&order_by=" ~ last_key ~ "&order_direction=" ~ last_order ~ "#" ~ question_id %}
+        {% elif comments is defined and comments == "true" %}
+            {% set post_link = post_link ~ "?comments=true" ~ "&order_by=" ~ last_key ~ "&order_direction=" ~ last_order ~ "#" ~ question_id %}
+        {% elif user_page is defined and user_page == "true" %}
+            {% set post_link = post_link ~ "?user_page=true" ~ "#" ~ question_id %}
+        {% endif %}
     {% elif redirect_to is defined and redirect_to == "main" %}
         {% set post_link = "/question/" ~ question_id ~ "/new-tag?redirect_to=main"  %}
     {% endif %}
