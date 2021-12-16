@@ -4,6 +4,7 @@ import server
 import encrypter
 import cryptography
 
+
 def collect_all_tags_for_questions(questions):
     tags = {}
     for q in questions:
@@ -28,9 +29,16 @@ def handle_vote_redirect(question_id):
     key = request.args.get('order_by', 'vote_number')
     order = request.args.get('order_direction', 'desc')
     limit = request.args.get("limit")
+    search_phrase = request.args.get("search_phrase")
+    comments = request.args.get("comments")
     if limit and limit == "true":
         return redirect(f'/?order_by={key}&order_direction={order}')
-    return redirect(f'/list?order_by={key}&order_direction={order}')
+    else:
+        if search_phrase:
+            return redirect(f'/search?search-question={search_phrase}&order_by={key}&order_direction={order}')
+        elif comments and comments == "true":
+            return redirect(f'/question/{question_id}/comments?order_by={key}&order_direction={order}')
+        return redirect(f'/list?order_by={key}&order_direction={order}')
 
 
 def redirect_if_main(redirect_to, question_id):
