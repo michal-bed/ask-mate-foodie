@@ -15,14 +15,16 @@ FOLDER_NAME = os.path.join(dirname, UPLOAD_FOLDER)
 def get_all_questions(cursor, key, direction, questions_limit=100):
     if key in ('title', 'message'):
         query = """
-            SELECT *
+            SELECT question.*, ask_mate_user.user_name
             FROM question
+            INNER JOIN ask_mate_user ON question.user_id = ask_mate_user.id
             ORDER BY LOWER({0}) {1}
             LIMIT {2}""".format(key, direction, questions_limit)
     else:
         query = """
-            SELECT *
+            SELECT question.*, ask_mate_user.user_name
             FROM question
+            INNER JOIN ask_mate_user ON question.user_id = ask_mate_user.id
             ORDER BY {0} {1}
             LIMIT {2}""".format(key, direction, questions_limit)
     cursor.execute(query)
@@ -62,8 +64,9 @@ def get_one_comment(cursor, id):
 @database_common.connection_handler
 def get_all_answers_for_question(cursor, question_id, key, order):
     query = sql.SQL("""
-        SELECT *
+        SELECT answer.*, ask_mate_user.user_name
         FROM answer
+        INNER JOIN ask_mate_user ON answer.user_id = ask_mate_user.id
         WHERE question_id = %s
         ORDER BY {key} {order}""").format(key=sql.Identifier(key), order=sql.SQL(order))
     try:
@@ -76,8 +79,9 @@ def get_all_answers_for_question(cursor, question_id, key, order):
 @database_common.connection_handler
 def get_all_comments_for_answer(cursor, answer_id, key, order):
     query = """
-        SELECT *
+        SELECT comment.*, ask_mate_user.user_name
         FROM comment
+        INNER JOIN ask_mate_user ON comment.user_id = ask_mate_user.id
         WHERE answer_id = {0}
         ORDER BY {1} {2}""".format(answer_id, key, order)
     cursor.execute(query)
@@ -87,8 +91,9 @@ def get_all_comments_for_answer(cursor, answer_id, key, order):
 @database_common.connection_handler
 def get_all_comments_for_question(cursor, question_id, key, order):
     query = """
-        SELECT *
+        SELECT comment.*, ask_mate_user.user_name
         FROM comment
+        INNER JOIN ask_mate_user ON comment.user_id = ask_mate_user.id
         WHERE question_id = {0} and answer_id is NULL
         ORDER BY {1} {2}""".format(question_id, key, order)
     cursor.execute(query)
