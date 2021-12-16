@@ -134,6 +134,7 @@ a.ask-user-button {
     width: 85%;
     background: none repeat scroll 0 0 #FFFFFF;
     overflow: hidden;
+    color:#727272 ;
     padding: 40px 30px 70px 40px;
     border: 0 solid;
     border-radius: 8px;
@@ -157,16 +158,16 @@ a.ask-user-button {
         }
 
 .orange_box {
->>>>>>> development
+
     position: relative;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 10px;
     width: 85%;
+    color: white;
     background: none repeat scroll 0 0 #ECA111;
     overflow: hidden;
     padding: 40px 30px 70px 40px;
-    border: 1px solid;
     border-radius: 8px;
     box-shadow: 10px 5px 15px #525862;
     text-align: center
@@ -200,7 +201,6 @@ a.ask-user-button {
     width: 14%;
     font-weight: bold;
     color: #F0A142;
->>>>>>> development
 }
 
 .search-box{
@@ -221,40 +221,44 @@ a.ask-user-button {
 
 
 /*****************TOPBAR**********************/
-#logo-box{
-    grid-column: span 1;
-
-}
-#header{
-    height: 3rem;
-}
-#logotopbar {
-    height: 3rem;
-    float: left;
-}
-
-.topnav {
+.menu {
     display: grid;
-    grid-template-columns:  9em repeat(9, 1fr);
+    grid-template-columns: 150px repeat(auto-fit, minmax(150px, 1fr));
+    align-items: center;
+    align-content: center;
+    justify-content: left;
+    grid-gap: 1.5em;
+    padding: 0 30px;
     background: #FFFFFF;
-    overflow: hidden;
-    height: 68px
+}
+.menu ul{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 5em));
+    padding: 0;
+    margin: 0;
+    justify-items: center;
+    list-style: none;
 }
 
-.topnav a {
+.menu__logo
+{
+    height: 3em;
+}
+.menu a {
+    display: block;
     color: #525862;
-    text-align: center;
+    text-align: left;
     padding: 16px;
     text-decoration: none;
-    font-size: 19px
+    font-size: 14px
 }
 
-.topnav a:hover {
+.menu a:hover {
     background-color: #FFFFFF;
-    color: #525862
+    color: #efae34
 }
 
-.topnav a.active {
+.menu a.active {
     background-color: #ECA111;
     color: #FFFFFF
 }
@@ -397,10 +401,15 @@ a.ask-user-button {
     background: linear-gradient(90deg, rgba(230, 155, 17, 1) 0%, rgba(242, 170, 18, 1) 50%, rgba(221, 146, 20, 1) 100%);
     margin-left: auto;
     margin-right: auto;
+    text-content: center;
     padding: 10px 10px 50px 10px;
     border: 0;
     border-radius: 8px;
     box-shadow: 10px 5px 15px #525862
+}
+.yellow__user {
+    color: white;
+    text-align: center;
 }
 
 .yellow-header {
@@ -409,6 +418,16 @@ a.ask-user-button {
     text-align: center
 }
 
+.yellow__btn_area{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    align-items: center;
+    grid-column-gap: 2em;
+
+}
+.yellow_question-list{
+    padding: 2em;
+}
 .wrapp-around {
     position: relative;
     margin-left: auto;
