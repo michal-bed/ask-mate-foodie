@@ -1,4 +1,10 @@
-
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Foodie Helpdesk</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
 {% extends 'base.html' %}
 {% block head %}<title>Foodie Helpdesk</title>
 {% for message in get_flashed_messages() %}
@@ -152,3 +158,6 @@
 		    {% endfor %}
         {% endif %}
         {% endblock %}
+    </div>
+</body>
+</html>
