@@ -43,16 +43,17 @@
     </nav>
   </header>
 <body>
-    <div class="background-box">
-        <div class="create-account-date-box">
-            <h1>{{ user_data['user_name'] }}</h1>
-            <p>You have bin with us since: {{ user_data['registration_time'] }}<br>Your reputation: {{ user_data['reputation'] }}</p>
-        </div><br>
-        <div>
-            <a class="ask-user-button" href="/user/questions">Your questions<br>{{ questions['question'] }}</a>
-            <a class="ask-user-button" href="/user/answers">Your answers<br>{{ answers['answer'] }}</a>
-            <a class="ask-user-button" href="/user/comments">Your comments<br>{{ comments['comment'] }}</a>
-        </div><br>
+    <div class="yellow">
+
+            <h1 class="yellow-header">{{ user_data['user_name'] }}</h1>
+            <p class="yellow__user">You have been with us since: {{ user_data['registration_time'] }}<br>Your reputation: {{ user_data['reputation'] }}</p>
+
+        <div class="yellow__btn_area">
+            <a class="ask-user-button" href="/user/questions">Your questions: {{ questions['question'] }} <br> &#8595</a>
+            <a class="ask-user-button" href="/user/answers">Your answers: {{ answers['answer'] }}<br> &#8595</a>
+            <a class="ask-user-button" href="/user/comments">Your comments: {{ comments['comment'] }}<br> &#8595</a>
+        </div>
+        <div class="yellow_question-list">
         {% if url == "/user/questions" %}
             {% for question in user_questions %}
                 <div class="box">
@@ -149,6 +150,8 @@
                     </div>
                     <p class="date">Edited {{comment.edited_count}} times</p>
                 </div>
+
 		    {% endfor %}
         {% endif %}
+        </div>
         {% endblock %}

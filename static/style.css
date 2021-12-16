@@ -134,6 +134,7 @@ a.ask-user-button {
     width: 85%;
     background: none repeat scroll 0 0 #FFFFFF;
     overflow: hidden;
+    color:#727272 ;
     padding: 40px 30px 70px 40px;
     border: 0 solid;
     border-radius: 8px;
@@ -400,10 +401,15 @@ a.ask-user-button {
     background: linear-gradient(90deg, rgba(230, 155, 17, 1) 0%, rgba(242, 170, 18, 1) 50%, rgba(221, 146, 20, 1) 100%);
     margin-left: auto;
     margin-right: auto;
+    text-content: center;
     padding: 10px 10px 50px 10px;
     border: 0;
     border-radius: 8px;
     box-shadow: 10px 5px 15px #525862
+}
+.yellow__user {
+    color: white;
+    text-align: center;
 }
 
 .yellow-header {
@@ -412,6 +418,14 @@ a.ask-user-button {
     text-align: center
 }
 
+.yellow__btn_area{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    align-items: center;
+    grid-column-gap: 2em;
+
+
+}
 .wrapp-around {
     position: relative;
     margin-left: auto;
