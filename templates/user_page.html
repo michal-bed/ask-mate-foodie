@@ -25,8 +25,13 @@
                 <ul>
                     <li><a  href="{{ url_for('list_main_page') }}">Home</a></li>
                     <li><a  href="{{ url_for('display_all_tags') }}">All tags</a></li>
-                    <li><a  href="/users">Users</a></li>
-                    <li><a  class="active" href="/user/{{user_id}}">My profile</a></li>
+                    {% if user_id == user_data['id'] %}
+                        <li><a  href="/users">Users</a></li>
+                        <li><a  class="active" href="/user/{{user_id}}">My profile</a></li>
+                    {% else %}
+                        <li><a  class="active" href="/users">Users</a></li>
+                        <li><a  href="/user/{{user_id}}">My profile</a></li>
+                    {% endif %}
                     <li><a  href="/logout">Logout</a></li>
                 </ul>
 

@@ -496,7 +496,7 @@ def get_one_user(cursor, user_name):
 @database_common.connection_handler
 def get_user_data(cursor, user_id):
     query = """
-    SELECT user_name, registration_time, reputation
+    SELECT *
     FROM ask_mate_user
     WHERE id = %s"""
     cursor.execute(query, (int(user_id), ))
