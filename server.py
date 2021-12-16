@@ -455,6 +455,64 @@ def logout():
     return render_template('login.html', logged=utils.is_user_logged_in(), message='You are logged out')
 
 
+########## user page functions ##########
+
+
+@app.route("/user/")
+def user_page():
+    user_id = utils.decrypt_user_id(session.get('user_id'))
+    user_data = data_manager.get_user_data(user_id)
+    questions_counted = data_manager.get_count_user_questions(user_id)
+    answers_counted = data_manager.get_count_user_answers(user_id)
+    comments_counted = data_manager.get_count_user_comment(user_id)
+    return render_template('user_page.html', questions=questions_counted,
+                           answers=answers_counted, comments=comments_counted,
+                           user_data=user_data)
+
+
+@app.route("/user/questions")
+def get_user_questions():
+    user_id = utils.decrypt_user_id(session.get('user_id'))
+    user_data = data_manager.get_user_data(user_id)
+    questions_counted = data_manager.get_count_user_questions(user_id)
+    answers_counted = data_manager.get_count_user_answers(user_id)
+    comments_counted = data_manager.get_count_user_comment(user_id)
+    user_questions = data_manager.get_user_questions(user_id)
+    tags = utils.collect_all_tags_for_questions(user_questions)
+    return render_template('user_page.html', questions=questions_counted,
+                           answers=answers_counted, comments=comments_counted,
+                           user_data=user_data, user_questions=user_questions,
+                           tags=tags, url="/user/questions")
+
+
+@app.route("/user/answers")
+def get_user_answers():
+    user_id = utils.decrypt_user_id(session.get('user_id'))
+    user_data = data_manager.get_user_data(user_id)
+    questions_counted = data_manager.get_count_user_questions(user_id)
+    answers_counted = data_manager.get_count_user_answers(user_id)
+    comments_counted = data_manager.get_count_user_comment(user_id)
+    user_answers = data_manager.get_user_answers(user_id)
+    return render_template('user_page.html', questions=questions_counted,
+                           answers=answers_counted, comments=comments_counted,
+                           user_data=user_data, user_answers=user_answers,
+                           url="/user/answers")
+
+
+@app.route("/user/comments")
+def get_user_comments():
+    user_id = utils.decrypt_user_id(session.get('user_id'))
+    user_data = data_manager.get_user_data(user_id)
+    questions_counted = data_manager.get_count_user_questions(user_id)
+    answers_counted = data_manager.get_count_user_answers(user_id)
+    comments_counted = data_manager.get_count_user_comment(user_id)
+    user_comments = data_manager.get_user_comment(user_id)
+    return render_template('user_page.html', questions=questions_counted,
+                           answers=answers_counted, comments=comments_counted,
+                           user_data=user_data, user_comments=user_comments,
+                           url="/user/comments")
+
+
 @app.route('/users', methods=["GET"])
 @session_common.require_login
 def all_users():

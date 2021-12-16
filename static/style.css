@@ -105,6 +105,24 @@ a.ask-call-button {
     text-align: center
 }
 
+.ask-user-button {
+    background-color: #ffffff;
+    background-image: -moz-linear-gradient(center top, #EF962B 0%, #ED8B16 100%);
+    border: 1.0em;
+    border-radius: 3px;
+    box-shadow: 10px 5px 15px #525862;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1.0em;
+    padding: 1em 1.8em;
+    text-align: center;
+    text-shadow: 0 -1px 0 rgba(222, 122, 0, 0.8)
+}
+
+a.ask-user-button {
+    color: #ED8B16;
+}
+
 
 /*******BOX*********/
 
@@ -123,12 +141,38 @@ a.ask-call-button {
     text-align: center
 }
 
-.orange_box {
+.background-box {
     position: relative;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 10px;
     width: 85%;
+    background: none repeat scroll 0 0 #ECA111;
+    overflow: hidden;
+    padding: 40px 30px 70px 40px;
+    border: 1px solid;
+    border-radius: 8px;
+    box-shadow: 10px 5px 15px #525862;
+    text-align: center
+        }
+
+.orange_box {
+>>>>>>> development
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+    width: 85%;
+    background: none repeat scroll 0 0 #ECA111;
+    overflow: hidden;
+    padding: 40px 30px 70px 40px;
+    border: 1px solid;
+    border-radius: 8px;
+    box-shadow: 10px 5px 15px #525862;
+    text-align: center
+
+}
+.create-account-date-box {
     background: linear-gradient(90deg, rgba(230, 155, 17, 1) 0%, rgba(242, 170, 18, 1) 50%, rgba(221, 146, 20, 1) 100%);
     overflow: hidden;
     padding: 40px 30px 70px 40px;
@@ -156,6 +200,7 @@ a.ask-call-button {
     width: 14%;
     font-weight: bold;
     color: #F0A142;
+>>>>>>> development
 }
 
 .search-box{
@@ -168,6 +213,7 @@ a.ask-call-button {
     box-shadow: 10px 5px 15px #525862;
 
 }
+
 .container {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
