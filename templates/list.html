@@ -101,7 +101,7 @@
 
 	{% for question in questions_data %}
 	<div class="box" id="{{question.id}}">
-		<p class="date">published: {{ question["submission_time"] }} | views: {{ question["view_number"] }} </p>
+		<p class="date">Author: <a class="author" href="/user/{{ user_id }}">{{ question.user_name }} </a>| published: {{ question["submission_time"] }} | views: {{ question["view_number"] }} </p>
 		<div class="comment-block">
 			{% if question['image'] %}
 			<img class="question-photo-embed" alt="question image" src="{{ url_for('static', filename=question['image']) }}"> {% endif %}
@@ -127,7 +127,8 @@
             {% set downvote_link = downvote_link ~ "#" ~ question.id %}
         {% endif %}
 	  	<div class="box-voting">
-			<p class="date"> Number of votes: {{ question["vote_number"] }} Vote:
+			<p class="date">
+                Number of votes: {{ question["vote_number"] }} | Vote:
 				<a href="{{upvote_link}}">
 					<img class="thumb" alt="thumbup" src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-10-240.png') }}">
 				</a>
