@@ -60,6 +60,7 @@ def question(question_id):
     order = request.args.get('order_direction', "desc")
     answers = data_manager.get_all_answers_for_question(question_id, key, order)
     tags = utils.collect_all_tags_for_one_question(selected_question)
+
     return render_template("question.html", session_id=utils.get_user_id(session), logged=utils.is_user_logged_in(),
                            question=selected_question, answers=answers, last_key=key, tags=tags)
 

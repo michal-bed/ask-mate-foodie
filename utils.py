@@ -105,7 +105,10 @@ def replacing_special_keys(data_to_replace):
 
 def get_user_id(session):
     """Get user id from actual session."""
-    return decrypt_user_id(session['user_id'])
+    try:
+        return decrypt_user_id(session['user_id'])
+    except:
+        return None
 
 
 def decrypt_user_id(user_id):
