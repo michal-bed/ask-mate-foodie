@@ -108,7 +108,7 @@ def get_user_id(session):
     try:
         return decrypt_user_id(session['user_id'])
     except:
-        return None
+        return 0
 
 
 def decrypt_user_id(user_id):
