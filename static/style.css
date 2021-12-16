@@ -424,7 +424,9 @@ a.ask-user-button {
     align-items: center;
     grid-column-gap: 2em;
 
-
+}
+.yellow_question-list{
+    padding: 2em;
 }
 .wrapp-around {
     position: relative;
