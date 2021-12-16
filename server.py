@@ -273,7 +273,7 @@ def edit_comment_to_question(question_id, comment_id):
             data = {'question_id': question_id, 'message': request.form['comment'],
                     'submission_time': time.strftime("%Y-%m-%d %H:%M:%S", datetime.datetime.now().timetuple()),
                     'edited_count': the_comment["edited_count"]+1}
-            utils.replacing_special_keys(data['message'])
+            data['message'] = utils.replacing_special_keys(data['message'])
             data_manager.edit_comment(comment_id, data)
             return redirect(f'/question/{question_id}/comments')
     flash("You can not edit the comment.")
@@ -294,7 +294,7 @@ def edit_comment_to_answer(answer_id, question_id, comment_id):
             data = {'question_id': question_id, 'answer_id': answer_id, 'message': request.form['comment'],
                     'submission_time': time.strftime("%Y-%m-%d %H:%M:%S", datetime.datetime.now().timetuple()),
                     'edited_count': the_comment["edited_count"]+1}
-            utils.replacing_special_keys(data['message'])
+            data['message'] = utils.replacing_special_keys(data['message'])
             data_manager.edit_comment(comment_id, data)
             return redirect(f'/answer/{answer_id}#{comment_id}')
     flash("You can not edit the comment.")
@@ -343,7 +343,7 @@ def add_comment_to_question(question_id):
             "edited_count": 0,
             "user_id": utils.get_user_id(session)
         }
-        utils.replacing_special_keys(data['message'])
+        data['message'] = utils.replacing_special_keys(data['message'])
         data_manager.add_comment(data)
         return redirect(f'/question/{question_id}/comments')
 
@@ -365,7 +365,7 @@ def add_comment_to_answer(answer_id):
             "edited_count": 0,
             "user_id": utils.get_user_id(session)
         }
-        utils.replacing_special_keys(data['message'])
+        data['message'] = utils.replacing_special_keys(data['message'])
         data_manager.add_comment(data)
         return redirect(f'/answer/{answer_id}')
 
