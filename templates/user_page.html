@@ -49,14 +49,18 @@
   </header>
 <body>
     <div class="yellow">
-
-            <h1 class="yellow-header">{{ user_data['user_name'] }}</h1>
-            <p class="yellow__user">With us since: {{ user_data['registration_time'] }}<br>Your reputation: {{ user_data['reputation'] }}</p>
+            <p class="yellow__user">With us since: {{ user_data['registration_time'] }}<br>Reputation: {{ user_data['reputation'] }}</p>
 
         <div class="yellow__btn_area">
-            <a class="ask-user-button" href="/user/questions">questions: {{ questions['question'] }} <br> &#8595</a>
-            <a class="ask-user-button" href="/user/answers">answers: {{ answers['answer'] }}<br> &#8595</a>
-            <a class="ask-user-button" href="/user/comments">comments: {{ comments['comment'] }}<br> &#8595</a>
+            {% if user_id == user_data['id'] %}
+            <a class="ask-user-button" href="/user/questions">Your questions: {{ questions['question'] }} <br> &#8595</a>
+            <a class="ask-user-button" href="/user/answers">Your answers: {{ answers['answer'] }}<br> &#8595</a>
+            <a class="ask-user-button" href="/user/comments">Your comments: {{ comments['comment'] }}<br> &#8595</a>
+            {% else %}
+            <a class="ask-user-button" href="/user/questions">User questions: {{ questions['question'] }} <br> &#8595</a>
+            <a class="ask-user-button" href="/user/answers">User answers: {{ answers['answer'] }}<br> &#8595</a>
+            <a class="ask-user-button" href="/user/comments">User comments: {{ comments['comment'] }}<br> &#8595</a>
+            {% endif %}
         </div>
         <div class="yellow_question-list">
         {% if url == "/user/questions" %}
