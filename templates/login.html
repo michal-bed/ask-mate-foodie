@@ -21,25 +21,28 @@
 </div>
 </header>
 <div>
-    <form action="/login" method="post">
-
-        <div class="container">
+    <div class="wrapp-around">
+        <div class="yellow">
+            <h2 class="yellow-header"> Login </h2>
+            <div class="box">
+                <form action="/login" method="post">
             <p>{{message}}</p>
-            <label for="username"><b>Username</b></label>
+            <h4>Username</h4>
             <input type="text" placeholder="Enter Username" name="user_name" required>
-
-            <label for="password"><b>Password</b></label>
+            <h4>Password</h4>
             <input type="password" placeholder="Enter Password" name="password" required>
+            <br>
+            <br>
+            <input type="submit"  value="Login" class="html-text-box">
 
-            <button type="submit">Login</button>
-
-        </div>
-
-        <button type="button" class="cancelbtn">Cancel</button>
+            <input type="reset" class="html-text-box" value="Reset">
 
 
 
     </form>
 </div>
+    </div>
+		</div>
+    </div>
 
 {% endblock %}
