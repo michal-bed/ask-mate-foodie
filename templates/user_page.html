@@ -85,7 +85,8 @@
         {% elif url == "/user/answers" %}
             {% for answer in user_answers %}
                 <div class="box">
-                    <div class="edit-delete"><a class="sort" href="/question/{{answer.question_id}}/{{answer.id}}/edit">edit</a> |
+                    <div class="edit-delete"><a href="/question/{{ answer['question_id'] }}">See the question</a> |
+                        <a class="sort" href="/question/{{answer.question_id}}/{{answer.id}}/edit">edit</a> |
                         <a href="/answer/{{answer.id}}/delete">delete</a>
                     </div>
                     <p class="date">published: {{ answer["submission_time"] }}</p>
@@ -120,7 +121,8 @@
         {% elif url == "/user/comments" %}
             {% for comment in user_comments %}
                 <div class="box" id="{{comment.id}}">
-                    <div class="edit-delete"><a class="sort" href="/question/{{comment.question_id}}/{{comment.id}}/edit-comment">edit</a> |
+                    <div class="edit-delete"><a href="/question/{{ comment['question_id'] }}">See the question</a> |
+                        <a class="sort" href="/question/{{comment.question_id}}/{{comment.id}}/edit-comment">edit</a> |
                         <a href="/comments/{{comment.id}}/delete">delete</a>
                     </div>
                     <p class="date">Published: {{comment.submission_time }}</p>
