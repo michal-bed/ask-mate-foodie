@@ -46,11 +46,17 @@ def redirect_if_main(redirect_to, question_id):
         last_key = request.args.get("order_by")
         last_order = request.args.get("order_direction")
         limit = request.args.get("limit")
+        search_phrase = request.args.get("search_phrase")
+        comments = request.args.get("comments")
         if limit and limit == "true":
             if last_key and last_order:
                 return redirect(f"/?order_by={last_key}&order_direction={last_order}#{question_id}")
             return redirect(f"/#{question_id}")
         if last_key and last_order:
+            if search_phrase:
+                return redirect(f'/search?search-question={search_phrase}&order_by={last_key}&order_direction={last_order}')
+            elif comments and comments == "true":
+                return redirect(f'/question/{question_id}/comments?order_by={last_key}&order_direction={last_order}')
             return redirect(f"/list?order_by={last_key}&order_direction={last_order}#{question_id}")
         return redirect(f"/list#{question_id}")
     return redirect(f"/question/{question_id}?change_views=false")
