@@ -138,16 +138,20 @@
 				</a>Tags:
                 {%  for tag in tags[question["id"]] %}
                     {{ tag.name }}
-                    {% if limit is not defined %}
-                        <a href="/question/{{question.id}}/tag/{{tag.id}}/delete?order_by={{last_key}}&order_direction={{last_order}}&redirect_to=main">&#x2716</a>
+                    {%  if search_phrase is defined %}
+                        <a href="/question/{{question.id}}/tag/{{tag.id}}/delete?order_by={{last_key}}&order_direction={{last_order}}&search_phrase={{search_phrase}}#{{question.id}}">&#x2716</a>
+                    {% elif limit is not defined %}
+                        <a href="/question/{{question.id}}/tag/{{tag.id}}/delete?order_by={{last_key}}&order_direction={{last_order}}&redirect_to=main#{{question.id}}">&#x2716</a>
                     {%  else %}
-                        <a href="/question/{{question.id}}/tag/{{tag.id}}/delete?order_by={{last_key}}&order_direction={{last_order}}&redirect_to=main&limit=true">&#x2716</a>
+                        <a href="/question/{{question.id}}/tag/{{tag.id}}/delete?order_by={{last_key}}&order_direction={{last_order}}&redirect_to=main&limit=true#{{question.id}}">&#x2716</a>
                     {%  endif %}
                 {% endfor %}
-                {% if limit is not defined %}
-                    <a href="/question/{{question.id}}/new-tag?order_by={{last_key}}&order_direction={{last_order}}&redirect_to=main">Add tag</a>
+                {%  if search_phrase is defined %}
+                    <a href="/question/{{question.id}}/new-tag?order_by={{last_key}}&order_direction={{last_order}}&search_phrase={{search_phrase}}#{{question.id}}">Add tag</a>
+                {% elif limit is not defined %}
+                    <a href="/question/{{question.id}}/new-tag?order_by={{last_key}}&order_direction={{last_order}}&redirect_to=main#{{question.id}}">Add tag</a>
                 {%  else %}
-                    <a href="/question/{{question.id}}/new-tag?order_by={{last_key}}&order_direction={{last_order}}&redirect_to=main&limit=true">Add tag</a>
+                    <a href="/question/{{question.id}}/new-tag?order_by={{last_key}}&order_direction={{last_order}}&redirect_to=main&limit=true#{{question.id}}">Add tag</a>
                 {% endif %}
 
 			</p>

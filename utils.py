@@ -31,6 +31,7 @@ def handle_vote_redirect(question_id):
     limit = request.args.get("limit")
     search_phrase = request.args.get("search_phrase")
     comments = request.args.get("comments")
+    user_page = request.args.get("user_page")
     if limit and limit == "true":
         return redirect(f'/?order_by={key}&order_direction={order}')
     else:
@@ -38,14 +39,16 @@ def handle_vote_redirect(question_id):
             return redirect(f'/search?search-question={search_phrase}&order_by={key}&order_direction={order}')
         elif comments and comments == "true":
             return redirect(f'/question/{question_id}/comments?order_by={key}&order_direction={order}')
+        elif user_page and user_page == "true":
+            return redirect(f'/user/questions')
         return redirect(f'/list?order_by={key}&order_direction={order}')
 
 
 def redirect_if_main(redirect_to, question_id):
+    last_key = request.args.get("order_by")
+    last_order = request.args.get("order_direction")
+    limit = request.args.get("limit")
     if redirect_to and redirect_to == "main":
-        last_key = request.args.get("order_by")
-        last_order = request.args.get("order_direction")
-        limit = request.args.get("limit")
         if limit and limit == "true":
             if last_key and last_order:
                 return redirect(f"/?order_by={last_key}&order_direction={last_order}#{question_id}")
@@ -53,6 +56,15 @@ def redirect_if_main(redirect_to, question_id):
         if last_key and last_order:
             return redirect(f"/list?order_by={last_key}&order_direction={last_order}#{question_id}")
         return redirect(f"/list#{question_id}")
+    search_phrase = request.args.get("search_phrase")
+    comments = request.args.get("comments")
+    user_page = request.args.get("user_page")
+    if search_phrase:
+        return redirect(f'/search?search-question={search_phrase}&order_by={last_key}&order_direction={last_order}')
+    elif comments and comments == "true":
+        return redirect(f'/question/{question_id}/comments?order_by={last_key}&order_direction={last_order}')
+    elif user_page and user_page == "true":
+        return redirect(f'/user/questions')
     return redirect(f"/question/{question_id}?change_views=false")
 
 
@@ -68,6 +80,19 @@ def add_tag_if_get_method(question_id):
                                    redirect_to=redirect_to, limit="true")
         return render_template("add_tag.html", question_id=question_id, all_tags=all_tags,
                                redirect_to=redirect_to)
+    last_key = request.args.get("order_by")
+    last_order = request.args.get("order_direction")
+    search_phrase = request.args.get("search_phrase")
+    comments = request.args.get("comments")
+    user_page = request.args.get("user_page")
+    if search_phrase:
+        return render_template("add_tag.html", question_id=question_id, all_tags=all_tags, search_phrase=search_phrase,
+                               last_key=last_key, last_order=last_order)
+    elif comments and comments == "true":
+        return render_template("add_tag.html", question_id=question_id, all_tags=all_tags, comments="true",
+                               last_key=last_key, last_order=last_order)
+    elif user_page and user_page == "true":
+        return render_template("add_tag.html", question_id=question_id, all_tags=all_tags, user_page="true")
     return render_template("add_tag.html", question_id=question_id, all_tags=all_tags)
 
 

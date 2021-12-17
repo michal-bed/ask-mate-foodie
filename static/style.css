@@ -386,6 +386,12 @@ a.ask-user-button {
     color: #C76700
 }
 
+.undo-acceptance2 {
+    position: absolute;
+    top: 30px;
+    right: 250px;
+    color: #C76700
+}
 
 .box-list-acceptance-buttons {
     position: absolute;

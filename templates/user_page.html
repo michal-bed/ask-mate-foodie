@@ -21,7 +21,7 @@
                 <img class="menu__logo" alt="Foodie Helpdesk Logo" src="{{ url_for('static', filename='Pictures/chefer-1.png') }}">
                         </a>
 
-            {% if logged %}
+            {% if session.get("user_id") %}
                 <ul>
                     <li><a  href="{{ url_for('list_main_page') }}">Home</a></li>
                     <li><a  href="{{ url_for('display_all_tags') }}">All tags</a></li>
@@ -38,7 +38,7 @@
             {% else %}
                 <ul>
                     <li><a  href="{{ url_for('list_main_page') }}">Home</a></li>
-                    <li><a  class="active" href="{{ url_for('display_all_tags') }}">All tags</a></li>
+                    <li><a  href="{{ url_for('display_all_tags') }}">All tags</a></li>
                     <li><a  href="/login">Login</a></li>
                     <li><a  href="/register">Register</a></li>
                 </ul>
@@ -65,7 +65,7 @@
         <div class="yellow_question-list">
         {% if url == "/user/questions" %}
             {% for question in user_questions %}
-                <div class="box">
+                <div class="box" id="{{ question['id'] }}">
                     <p class="date">published: {{ question["submission_time"] }} | views: {{ question["view_number"] }} </p>
                     <div class="comment-block">
                         {% if question['image'] %}
@@ -75,15 +75,10 @@
                             </h3>
                         <p class="list-text">{{ question["message"] | safe }}</p>
                     </div>
-                    {% set upvote_link = "/question/" ~ question.id ~ "/add-vote?order_by=" ~ last_key ~ "&order_direction=" ~ last_order  %}
-                    {% set downvote_link ="/question/" ~ question.id ~ "/remove-vote?order_by=" ~ last_key ~ "&order_direction=" ~ last_order %}
-                    {% if limit is defined and limit == "true" %}
-                        {% set upvote_link = upvote_link ~ "&limit=true#" ~ question.id %}
-                        {% set downvote_link = downvote_link ~ "&limit=true#" ~ question.id %}
-                    {% else %}
-                        {% set upvote_link = upvote_link ~ "#" ~ question.id %}
-                        {% set downvote_link = downvote_link ~ "#" ~ question.id %}
-                    {% endif %}
+                    {% set upvote_link = "/question/" ~ question.id ~ "/add-vote?user_page=true#" ~ question.id   %}
+                    {% set downvote_link ="/question/" ~ question.id ~ "/remove-vote?user_page=true#" ~ question.id %}
+{#                    {% set upvote_link = upvote_link ~ "&user_page=true#" ~ question.id %}#}
+{#                    {% set downvote_link = downvote_link ~ "&user_page=true#" ~ question.id %}#}
                     <div class="box-voting">
                         <p class="date"> Number of votes: {{ question["vote_number"] }} Vote:
                             <a href="{{upvote_link}}">
@@ -95,17 +90,9 @@
                             </a>Tags:
                             {%  for tag in tags[question["id"]] %}
                                 {{ tag.name }}
-                                {% if limit is not defined %}
-                                    <a href="/question/{{question.id}}/tag/{{tag.id}}/delete?order_by={{last_key}}&order_direction={{last_order}}&redirect_to=main">&#x2716</a>
-                                {%  else %}
-                                    <a href="/question/{{question.id}}/tag/{{tag.id}}/delete?order_by={{last_key}}&order_direction={{last_order}}&redirect_to=main&limit=true">&#x2716</a>
-                                {%  endif %}
+                                <a href="/question/{{question.id}}/tag/{{tag.id}}/delete?user_page=true#{{question.id}}">&#x2716</a>
                             {% endfor %}
-                            {% if limit is not defined %}
-                                <a href="/question/{{question.id}}/new-tag?order_by={{last_key}}&order_direction={{last_order}}&redirect_to=main">Add tag</a>
-                            {%  else %}
-                                <a href="/question/{{question.id}}/new-tag?order_by={{last_key}}&order_direction={{last_order}}&redirect_to=main&limit=true">Add tag</a>
-                            {% endif %}
+                            <a href="/question/{{question.id}}/new-tag?user_page=true#{{question.id}}">Add tag</a>
                         </p>
                     </div>
                 </div>
@@ -137,7 +124,7 @@
                     <div class="acceptance_button">
                         {% if answer.accepted %}
                             <img class="acceptance" alt="accepted" src="{{ url_for('static', filename='Pictures/accepted.png') }}">
-                             <div class="undo-acceptance"><a  href="/answer/{{ answer.id }}/accept">Undo acceptance</a> |</div>
+                             <div class="undo-acceptance2"><a  href="/answer/{{ answer.id }}/accept">Undo acceptance</a> |</div>
                         {% else %}
                             <a href="/answer/{{ answer.id }}/accept">
                                 <img class="acceptance" alt="awaiting_acceptance" src="{{ url_for('static', filename='Pictures/awaiting_acceptance.png') }}">
@@ -157,7 +144,7 @@
                     <div class="comment-block">
                         <p class="list-text">{{comment.message}}</p>
                     </div>
-                    <p class="date">Edited {{comment.edited_count}} times</p>
+                    <p class="date">Edited {{comment.edited_count}}  {{ "time" if comment.edited_count == 1 else "times" }}</p>
                 </div>
 		    {% endfor %}
         {% endif %}
