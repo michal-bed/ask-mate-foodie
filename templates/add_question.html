@@ -45,7 +45,11 @@
   </header>
 	<div class="wrapp-around">
 		<div class="yellow">
-			<h2 class="yellow-header"> Add/edit Question </h2>
+			{% if question is defined %}
+            <h2 class="yellow-header"> Edit Question </h2>
+            {% else %}
+            <h2 class="yellow-header"> Add Question </h2>
+            {% endif %}
 			<div class="box">
 				{# {% if question is defined %}#} {# {% set question_id = None %}#} {# {% else %}#} {# {% set question_id = question["id"] %}#} {# {% endif %}#} {% if question is defined %}
 				<form method="post" action="{{ url_for('edit_question', question_id=question["id"]) }}" enctype="multipart/form-data">

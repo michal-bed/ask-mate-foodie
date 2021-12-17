@@ -98,7 +98,7 @@
 				<form method="post" action="{{url}}" enctype="multipart/form-data">
 					<h2>{{action}} Comment</h2>
                     {% if comment_message %}
-					<textarea name="comment" cols="30" rows="5" class="html-text-box" placeholder={{ comment_message }}></textarea><br>
+					<textarea name="comment" cols="30" rows="5" class="html-text-box">{{ comment_message }}</textarea><br>
 					{% else %}
                     <textarea name="comment" cols="30" rows="5" class="html-text-box" placeholder="Submit your comment"></textarea><br>
                     {% endif %}
