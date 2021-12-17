@@ -150,7 +150,12 @@
         {% elif url == "/user/comments" %}
             {% for comment in user_comments %}
                 <div class="box" id="{{comment.id}}">
-                    <div class="edit-delete"><a href="/question/{{ comment['question_id'] }}">See the question</a> |
+                    <div class="edit-delete">
+                        {% if comment['answer_id'] is none %}
+                        <a href="/question/{{ comment['question_id'] }}/comments">See the question</a> |
+                        {% else %}
+                        <a href="/answer/{{ comment['answer_id'] }}">See the answer</a> |
+                        {% endif %}
                         <a class="sort" href="/question/{{comment.question_id}}/{{comment.id}}/edit-comment">edit</a> |
                         <a href="/comments/{{comment.id}}/delete">delete</a>
                     </div>
