@@ -1,5 +1,42 @@
 # AskMate (sprint 3)
 
+## Foodie
+
+In our team we prepared a food-related Q&A app using Python, Flask, PostgreSQL and
+creating SQL queries to store the data in the database.
+
+
+## Run Locally
+
+Clone the project
+
+```bash
+  git clone https://github.com/michal-bed/ask-mate-foodie.git
+```
+
+Go to the project directory
+
+```bash
+  cd ask-mate-foodie
+```
+Configure virtual environment
+
+You can use your IDE built-in functionality (for instance [here you can check how to do it in IntelliJ](https://www.jetbrains.com/help/idea/creating-virtual-environment.html), similar option is also available in PyCharm).
+More infromation how to use virtualenv (also independently from your IDE) you can find in [this article](https://learnpython.com/blog/how-to-use-virtualenv-python/).
+
+Install dependencies
+
+```bash
+  pip install -r requirements.txt
+```
+
+Start the server
+
+```bash
+  python server.py
+```
+Besides, you can also use a built-in IDE functionality to start the app.
+
 ## Story
 
 Last week you made great progress improving your web application.
